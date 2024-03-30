@@ -11,4 +11,5 @@ Furthermore, the website aims to integrate restaurant recommendations tailored t
  - [Suraj Mishra](https://github.com/sm5689)
  - [Parwaz Singh](https://github.com/Parwazsingh) 
 
- ## Ideation:
+ ## Ideation/planing:
+![Img](./Documentation/Images/Planing.png)
