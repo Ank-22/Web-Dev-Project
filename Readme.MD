@@ -12,4 +12,7 @@ Furthermore, the website aims to integrate restaurant recommendations tailored t
  - [Parwaz Singh](https://github.com/Parwazsingh) 
 
  ## Ideation/planing:
+ ### Color palette: 
+ - https://colorhunt.co/palette/b5c99a862b0dfff9c9ffc95f (Picked this because when ever I think food, I think of nature/earth and this color kinda suites that) 
+   
 ![Img](./Documentation/Images/Planing.png)
