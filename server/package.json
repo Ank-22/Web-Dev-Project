@@ -1,0 +1,11 @@
+{
+  "name": "rr-node-server-app",
+  "version": "1.0.0",
+  "description": "Node.js HTTP Web server for the recipe recommendation app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ankit, Eric, Suraj, and Parwaz",
+  "license": "ISC"
+}
