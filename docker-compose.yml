@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  server:
+    build: ./server
+    container_name: server_c
+    command: npm run dev
+    ports:
+      - '4000:4000'
+  client: 
+    build: ./client/recipe-recommendation-web-app
+    command: npm start
+    container_name: client_c
+    ports:
+      - '3000:3000'
+    stdin_open: true
