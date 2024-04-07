@@ -11,11 +11,11 @@ Furthermore, the website aims to integrate restaurant recommendations tailored t
  - [Suraj Mishra](https://github.com/sm5689)
  - [Parwaz Singh](https://github.com/Parwazsingh) 
 
- ## Ideation/planing:
+ ## Ideation/planning:
  ### Color palette: 
  - https://colorhunt.co/palette/b5c99a862b0dfff9c9ffc95f (Picked this because when ever I think food, I think of nature/earth and this color kinda suites that) 
    
-![Img](./Documentation/Images/Planing.png)
+![Img](./Documentation/Images/Planning.png)
 
 ### Overview Of UI
 We will try to implement a UI in a form of book style animation and scroll. Where the recipes are listed and font use will be hand written ones. 
