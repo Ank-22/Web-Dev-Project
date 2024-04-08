@@ -8,7 +8,7 @@ Furthermore, the website aims to integrate restaurant recommendations tailored t
 ### Developers:
  - [Ankit Sinha](https://github.com/Ank-22)  
  - [Eric Nguyen](https://github.com/enguyen11)
- - [Suraj Mishra](https://github.com/sm5689)
+ - [Suraj Mishra ☀️](https://github.com/sm5689)
  - [Parwaz Singh](https://github.com/Parwazsingh) 
 
  ## Ideation/planning:
