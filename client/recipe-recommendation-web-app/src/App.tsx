@@ -1,10 +1,19 @@
 import React from 'react';
 import './App.css';
+import LandingPage from "./components/header";
+import RecipeNavigation from "./components/Navigation";
 
 function App() {
   return (
-    <div className="App">
-      <h1> Welcome to the Recipes Recommendation App</h1>
+    <div className="App color-sand container-fluid px-0">
+        <div>
+            <RecipeNavigation />
+        </div>
+
+        <div className="downshift">
+            <LandingPage/>
+        </div>
+
     </div>
   );
 }

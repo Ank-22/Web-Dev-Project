@@ -11,3 +11,69 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.image {
+  position: relative;
+  height: 1300px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+}
+
+.content div.img-text {
+  background-color: white;
+  text-transform: uppercase;
+  color: maroon;
+  padding: 1rem;
+  font-family: "Patrick Hand";
+  font-size: 2rem;
+  letter-spacing: 5px;
+}
+
+.pangolin-regular {
+  font-family: "Pangolin", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+.patrick-hand-regular {
+  font-family: "Patrick Hand", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.img-text.infinite {
+  animation: fadeIn 2s infinite; /* Adjust duration as needed */
+}
+
+.color-yellow {
+  background-color: #FFC95F;
+}
+
+.color-maroon {
+  background-color: #862B0D;
+}
+
+.color-kiwi-green {
+  background-color: #B5C99A;
+}
+
+.color-sand {
+  background-color: #FFF9C9;
+}
+
+.downshift {
+  padding-top: 65px;
+}
