@@ -9,7 +9,7 @@ Furthermore, the website aims to integrate restaurant recommendations tailored t
  - [Ankit Sinha](https://github.com/Ank-22)  
  - [Eric Nguyen](https://github.com/enguyen11)
  - [Suraj Mishra ☀️](https://github.com/sm5689)
- - [Parwaz Singh](https://github.com/Parwazsingh) 
+ - [Parwaz Singh :smile:](https://github.com/Parwazsingh) 
 
  ## Ideation/planning:
  ### Color palette: 
