@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.color-yellow {
+  background-color: #FFC95F;
+}
+
+.color-maroon {
+  background-color: #862B0D;
+}
+
+.color-kiwi-green {
+  background-color: #B5C99A;
+}
+
+.color-sand {
+  background-color: #FFF9C9;
+}
+
+.downshift {
+  padding-top: 65px;
+}
+

@@ -1,12 +1,18 @@
 import React from 'react';
 import './App.css';
+import RecipeNavigation from "./components/header";
 
 function App() {
-  return (
-    <div className="App">
-      <h1> Welcome to the Recipes Recommendation App</h1>
-    </div>
-  );
+    return (
+        <div className="container-fluid">
+            <div>
+                <RecipeNavigation />
+            </div>
+            <div className="downshift">
+                Hello World
+            </div>
+        </div>
+    );
 }
 
 export default App;
