@@ -76,6 +76,11 @@ code {
   background-color: #FFF9C9;
 }
 
+.mandatory-indicator {
+  color: red;
+  font-size: 1rem;
+}
+
 .downshift {
   padding-top: 65px;
 }
