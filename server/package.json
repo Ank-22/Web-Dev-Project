@@ -1,14 +1,15 @@
 {
-  "type": "module",
-  "name": "rr-node-server-app",
+  "name": "project-node-sever",
   "version": "1.0.0",
-  "description": "Node.js HTTP Web server for the recipe recommendation app",
-  "main": "index.js",
+  "description": "Backend for Web Dev Project - RecipeBook",
+  "main": "App.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node App.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Ankit, Eric, Suraj, and Parwaz",
+  "author": "",
   "license": "ISC",
-  "start": "node App.js"
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1"
+  }
 }
