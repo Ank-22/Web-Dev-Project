@@ -1,10 +1,11 @@
 import express from 'express';
 import cors from "cors";
 import mongoose from "mongoose";
-import GroupRoutes from './Group/routes';
-import GroupItemRoutes from './GroupItem/routes';
-import RecipeRoutes from './Recipes/routes';
-import UserRoutes from './Users/routes';
+import GroupRoutes from './Group/routes.js';
+import GroupItemRoutes from './GroupItem/routes.js';
+import RecipeRoutes from './Recipes/routes.js';
+import UserRoutes from './Users/routes.js';
+import Hello from "./Hello.js";
 
 
 mongoose.connect("mongodb://127.0.0.1:27017/kanbas");
