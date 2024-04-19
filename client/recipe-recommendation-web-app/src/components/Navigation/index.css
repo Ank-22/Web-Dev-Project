@@ -1,0 +1,13 @@
+.header_block {
+    position: fixed;
+    width: 100%;
+    height: 65px;
+    background-color: #862B0D;
+    z-index: 999;
+}
+
+span {
+    font-size: 1.5rem;
+    margin-top: 10px;
+    display: inline-block;
+}
