@@ -6,7 +6,7 @@ import GroupItemRoutes from './GroupItem/routes.js';
 import RecipeRoutes from './Recipes/routes.js';
 import UserRoutes from './Users/routes.js';
 import Hello from "./Hello.js";
-
+// corrected the import statements
 
 mongoose.connect("mongodb://127.0.0.1:27017/kanbas");
 const app = express();
