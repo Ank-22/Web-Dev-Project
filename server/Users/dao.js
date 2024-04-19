@@ -18,11 +18,11 @@ export const addUserGroup = (userId, groupId, role) =>
   );
 
 export const updatePassword = (userId, newPassword) =>
-  User.updateOne({ _id: userId }, { $set: { Password: newPassword } });
+  User.updateOne({ _id: userId }, { $set: { password: newPassword } });
 
 export const findUserRole = (userId) => User.findById(userId, { role: 1 });
 
 export const signIn = (username, password) =>
-  User.findOne({ username: username, Password: password });
+  User.findOne({ username: username, password: password });
 
 export const signUp = (user) => User.create(user);

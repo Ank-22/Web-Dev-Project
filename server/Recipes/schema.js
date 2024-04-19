@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     meat_type: { type: String, default: "NA" },
     steps: { type: String, required: true },
     GroupID: { type: String, default: "NA." },
-    Likes: { type: Number, default: 0 },
+    likes: { type: Number, default: 0 },
     comments: [{ type: String, default: "This is my 1st Comment" }]
 }, { collection: "recipes" });
 

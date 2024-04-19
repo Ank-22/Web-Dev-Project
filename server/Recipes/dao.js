@@ -10,7 +10,7 @@ export const updateRecipe = (recipeId, recipe) => model.updateOne({ _id: recipeI
 
 export const deleteRecipe = (recipeId) => model.deleteOne({ _id: recipeId });
 
-export const modifyLikes = (recipeId, newLikes) => model.updateOne({ _id: recipeId }, { $set: { Likes: newLikes } });
+export const modifyLikes = (recipeId, newLikes) => model.updateOne({ _id: recipeId }, { $set: { likes: newLikes } });
 
 export const addComment = (recipeId, comment) => model.updateOne({ _id: recipeId }, { $push: { comments: comment } });
 
