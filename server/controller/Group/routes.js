@@ -1,4 +1,4 @@
-import * as dao from "./dao.js";
+import * as dao from "../../model/Group/dao.js";
 
 export default function GroupRoutes(app) {
   const createGroup = async (req, res) => {

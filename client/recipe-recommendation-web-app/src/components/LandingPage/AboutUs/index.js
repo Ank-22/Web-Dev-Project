@@ -1,7 +1,11 @@
 import React from 'react';
 import Food from '../../../img/food.png'
+import axios from "axios"
 
 const AboutUs = () => {
+    const handleUser = async () => {
+        await axios.get("http://localhost:4000/api/groups/");
+    }
     return(
         <div style={{ display: 'flex' }}>
 
@@ -14,7 +18,7 @@ const AboutUs = () => {
                 </div>
                 <div style={{ display: 'flex' }}>
                     <div className="col-md-3">
-                        <p>Insert Here</p>
+                        <button className="btn btn-danger" onClick={handleUser}>Get User</button>
                     </div>
                     <div className="col-md-3">
                         <p>Insert Here</p>
