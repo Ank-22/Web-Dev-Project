@@ -10,11 +10,12 @@ import Profile from "./components/Profile";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(false);
+    const [role, setRole] = useState("");
 
     return (
     <div className="App color-sand container-fluid px-0">
         <HashRouter>
-        <HorizontalSideNav loggedIn={loggedIn}/>
+        <HorizontalSideNav loggedIn={loggedIn} role={role}/>
         <div className="right-shift">
             <RecipeNavigation loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
 
@@ -25,7 +26,7 @@ function App() {
             <Routes>
                 <Route path="/"         element={<Navigate to="/Home"/>}/>
                 <Route path="/Home"   element={<Home/>}/>
-                <Route path="/Profile" element={<Profile/>}/>
+                <Route path="/Profile" element={<Profile role={role} setRole={setRole}/>}/>
             </Routes>
 
         </div>

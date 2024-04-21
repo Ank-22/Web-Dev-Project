@@ -7,7 +7,7 @@ import {MdManageAccounts} from "react-icons/md";
 import {FaUser} from "react-icons/fa6";
 import {useEffect, useState} from "react";
 
-function HorizontalSideNav ({loggedIn}) {
+function HorizontalSideNav ({loggedIn, role}) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const [location, setLocation] = useState("Home");
@@ -33,10 +33,12 @@ function HorizontalSideNav ({loggedIn}) {
                                 <NavIcon><FaUser style={{fontSize: "1rem"}}/></NavIcon>
                                 <NavText>My Profile</NavText>
                             </NavItem>
+                        {role === "admin" &&
                             <NavItem eventKey={"ManageUsers"}>
                                 <NavIcon><MdManageAccounts style={{fontSize: "1.5rem"}}/></NavIcon>
                                 <NavText>Manage Users</NavText>
                             </NavItem>
+                        }
 
                     </NavItem>
                 }
