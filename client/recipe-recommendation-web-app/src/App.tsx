@@ -26,7 +26,7 @@ function App() {
             <Routes>
                 <Route path="/"         element={<Navigate to="/Home"/>}/>
                 <Route path="/Home"   element={<Home/>}/>
-                <Route path="/Profile" element={<Profile role={role} setRole={setRole}/>}/>
+                <Route path="/Profile" element={<Profile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
             </Routes>
 
         </div>

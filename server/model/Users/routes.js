@@ -87,6 +87,11 @@ export default function UserRoutes(app) {
     }
     res.json(currentUser);
   };
+  const signout = (req, res) => {
+    req.session.destroy();
+    currentUser = null;
+    res.sendStatus(200);
+  };
 
   app.post("/api/users", createUser);
   app.delete("/api/users/:userId", deleteUser);
@@ -99,4 +104,6 @@ export default function UserRoutes(app) {
   app.post("/api/users/signIn", signIn);
   app.post("/api/users/signUp", signUp);
   app.post("/api/users/profile", profile);
+  app.post("/api/users/signout", signout);
+
 }

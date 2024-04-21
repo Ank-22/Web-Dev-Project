@@ -27,3 +27,8 @@ export const updateUser = async (user: any) => {
     const response = await api.put(`${USERS_API}/${user._id}`, user);
     return response.data;
 };
+
+export const signout = async () => {
+    const response = await api.post(`${USERS_API}/signout`);
+    return response.data;
+};

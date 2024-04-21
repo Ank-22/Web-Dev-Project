@@ -6,10 +6,11 @@ import * as client from "../UserServices/client"
 interface ProfileProps {
     role: string;
     setRole: React.Dispatch<React.SetStateAction<string>>;
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-function Profile ({role, setRole}: ProfileProps) {
+function Profile ({role, setRole, setLoggedIn}: ProfileProps) {
     const [profile, setProfile] = useState({ username: "", password: "",
         first_name: "", last_name: "", email: "", role: role, country: "", age: ""});
 
@@ -32,13 +33,14 @@ function Profile ({role, setRole}: ProfileProps) {
         await client.updateUser(profile);
         alert("Update successful!");
     };
-/*
+
     const signout = async () => {
         await client.signout();
+        setLoggedIn(false);
         navigate("/Home");
     };
 
-     */
+
 
     useEffect(() => {
         fetchProfile();
@@ -83,7 +85,7 @@ function Profile ({role, setRole}: ProfileProps) {
                     Save
                 </button>
                 <br/><br/>
-                <button className="btn btn-danger form-control" onClick={() =>console.log("Hello")}>
+                <button className="btn btn-danger form-control" onClick={signout}>
                     Sign Out
                 </button>
             </div>
