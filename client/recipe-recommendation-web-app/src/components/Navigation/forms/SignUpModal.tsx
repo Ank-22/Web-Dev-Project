@@ -1,36 +1,46 @@
 import {Button, Modal} from "react-bootstrap";
 import React, {useState} from "react";
-import axios from "axios"
+import * as client from "../../UserServices/client"
 
 function SignUpModal(props: any) {
     const { show, onHide} = props;
-    const [signUpData, setSignUpData] = useState(
-        {
-            id: "U" + new Date().valueOf(),
-            username: '',
-            email: '',
-            password: '',
-            role: 'member',
-            first_name: '',
-            last_name: '',
-            country: '',
-            age: 0,
-            group: []
-        }
-    );
+    const [errorMsg, setErrorMsg] = useState('');
+    let blankSignUpForm = {
+        id: "U" + new Date().valueOf(),
+        username: '',
+        email: '',
+        password: '',
+        role: 'member',
+        first_name: '',
+        last_name: '',
+        country: '',
+        age: 0,
+        group: []
+    }
+    const [signUpData, setSignUpData] = useState(blankSignUpForm);
 
     const handleChange = (e: any) => {
         setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async () => {
-        let userData = {
-            ...signUpData,
-            age: Number(signUpData.age)
+        try {
+            let userData = {
+                ...signUpData,
+                age: Number(signUpData.age)
+            }
+            const newUser = await client.createUser(userData);
+            setErrorMsg('');
+            onHide();
         }
-        const newUser = await axios.post("http://localhost:4000/api/users/signUp", userData);
-        console.log(newUser);
-        onHide();
+        catch (error: any) {
+            if (error.response.status === 400) {
+                setErrorMsg("Username is taken!");
+            }
+            else {
+                setErrorMsg("Unknown Error");
+            }
+        }
     }
     return (
         <Modal show={show} onHide={onHide} centered>
@@ -41,6 +51,9 @@ function SignUpModal(props: any) {
                 <div className="container">
                     <div className="row">
                         <div className="col">
+                            {errorMsg !== '' &&
+                                <p style={{"color": "red"}}>{errorMsg}</p>
+                            }
                             <label htmlFor="userInput">Enter your username: <span
                                 className="mandatory-indicator"> *</span>
                             </label>
@@ -109,7 +122,11 @@ function SignUpModal(props: any) {
                         Create Account
                     </Button>
                     {" "}
-                    <Button variant="secondary" onClick={onHide}>
+                    <Button variant="secondary" onClick={() => {
+                        setSignUpData(blankSignUpForm);
+                        setErrorMsg('');
+                        onHide();
+                    }}>
                         Cancel
                     </Button>
                 </div>
