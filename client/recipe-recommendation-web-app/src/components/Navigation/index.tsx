@@ -1,14 +1,17 @@
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AiOutlineMenuFold} from "react-icons/ai";
-import {useState} from "react";
+import React, {useState} from "react";
 import SignUpModal from "./forms/SignUpModal";
 import LoginModal from "./forms/LoginModal";
+interface RecipeNavigationProps {
+    loggedIn: boolean;
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function RecipeNavigation() {
+function RecipeNavigation({loggedIn, setLoggedIn}: RecipeNavigationProps) {
     const [showSignUp, setShowSignUp] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
-    const [loggedIn, setLoggedIn] = useState(false);
+    //const [loggedIn, setLoggedIn] = useState(false);
 
 
     const handleSignUp = () => {
@@ -19,14 +22,11 @@ function RecipeNavigation() {
     }
     return (
         <div className="header_block">
-            <button className="float-start btn"
-                    style={{marginTop: "0px", marginLeft: "10px", fontSize: "1.75rem",
-                        background: "transparent", color: "#FFC95F", outline:"none", border:"none"}}><AiOutlineMenuFold /></button>
 
             <span className="align-content-center fw-bold" style={{marginTop:"10px"}}>RECIPES AND RECOMMENDATIONS</span>
             {!loggedIn &&
                 <button className="btn float-end " style={{
-                    marginTop: "10px", marginRight: "10px",
+                    marginTop: "10px", marginRight: "80px",
                     background: "#FFC95F", color: "black"
                 }} onClick={() => handleLogin()}>
                     Login
