@@ -26,6 +26,7 @@ function LoginModal(props: any) {
             setErrorMsg('');
             onHide();
             setLoggedIn(true);
+            setCredentials({username: '', password: ''})
             navigate(`/Profile`);
 
         } catch (error: any) {

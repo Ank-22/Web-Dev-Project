@@ -26,7 +26,7 @@ function HorizontalSideNav ({loggedIn, role}) {
             <SideNav.Toggle/>
             <SideNav.Nav selected={location}>
                 {loggedIn &&
-                    <NavItem >
+                    <NavItem eventKey={"Profile"}>
                         <NavIcon><CgProfile style={{fontSize: "1.5rem"}}/></NavIcon>
                         <NavText>Profile</NavText>
                             <NavItem eventKey={"Profile"}>
