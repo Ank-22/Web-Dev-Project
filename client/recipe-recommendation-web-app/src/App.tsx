@@ -3,6 +3,8 @@ import './App.css';
 import RecipeNavigation from "./components/Navigation";
 import Home from "./components/Home";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
+import RecipeDetail from './components/Recipe';
+
 
 function App() {
   return (
@@ -21,6 +23,10 @@ function App() {
         </div>
         </HashRouter>
 
+        <hr/>
+        <div>
+          <RecipeDetail/>
+        </div>
     </div>
   );
 }
