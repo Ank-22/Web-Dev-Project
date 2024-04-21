@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, TextField, Button, Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
 
 interface Recipe {
@@ -8,7 +8,12 @@ interface Recipe {
   name: string;
   imageUrl: string;
   Likes: number;
+  keyword: string;
 }
+
+const request = axios.create({
+  withCredentials: true,
+});
 
 const RecipeSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -23,7 +28,7 @@ const RecipeSearch: React.FC = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/api/recipes');
+      const response = await request.get('http://localhost:4000/api/recipes');
       setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
     } catch (error: any) {
       setError('Failed to fetch recipes');
@@ -32,13 +37,16 @@ const RecipeSearch: React.FC = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/getRecipesByName/${searchTerm}`);
-      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
-    } catch (error: any) {
-      setError('Failed to search recipes');
-    }
+      console.log(searchTerm)
+      const response = await axios.get(`http://localhost:4000/api/recipes/search?keyword=${searchTerm}`);
+      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes))
+      console.log("After API")
+      return response.data;
+    } catch (error) {
+      console.error('Error searching recipes:', error);
+      return []; // Return an empty array on error
+    }
   };
-
   return (
     <Box sx={{ flexGrow: 1, m: 2 }}>
       <Typography variant="h4" gutterBottom component="div">
@@ -61,7 +69,7 @@ const RecipeSearch: React.FC = () => {
               <CardMedia
                 component="img"
                 height="140"
-                image={recipe.imageUrl || '/images/deafult.jpg'}
+                image={recipe.imageUrl ||'/images/deafult.jpg'}
                 alt={recipe.name}
               />
               <CardContent>

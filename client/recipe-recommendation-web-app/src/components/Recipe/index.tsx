@@ -17,8 +17,17 @@ interface Recipe {
   steps: string[];
   GroupID: string;
   Likes: number;
-  comments: string[];
+  comments: Comment[];
   owner: string;
+}
+
+interface Comment{
+  author: string;
+  text: string;
+}
+
+const handleUser = async () => {
+  await axios.get("http://localhost:4000/api/users");
 }
 
 const RecipeDetail: React.FC = () => {
@@ -57,16 +66,16 @@ const RecipeDetail: React.FC = () => {
   };
 
   const addComment = async () => {
-    if (comment.trim()) {
-      try {
-        const updatedComments = [...recipe!.comments, comment];
-        await axios.post(`http://localhost:4000/api/Recipes/comment/${recipeId}`, { comments: updatedComments });
-        setRecipe({ ...recipe!, comments: updatedComments });
-        setComment('');
-      } catch (err) {
-        setError('Failed to add comment');
-      }
-    }
+    // if (comment.trim()) {
+    //   try {
+    //     const updatedComments = [...recipe!.comments, comment];
+    //     await axios.post(`http://localhost:4000/api/Recipes/comment/${recipeId}`, { comments: updatedComments });
+    //     setRecipe({ ...recipe!, comments: updatedComments });
+    //     setComment('');
+    //   } catch (err) {
+    //     setError('Failed to add comment');
+    //   }
+    // }
   };
 
   if (loading) return <Typography>Loading...</Typography>;
@@ -105,9 +114,9 @@ const RecipeDetail: React.FC = () => {
           </Typography>
           <Typography sx={{ mt: 2 }}>
             <strong>Comments:</strong>
-            {recipe.comments.map((c, index) => (
+            {recipe.comments.map((comment, index) => (
               <Typography key={index} sx={{ mt: 1 }}>
-                {c}
+                <strong>{comment.author}</strong>: {comment.text}
               </Typography>
             ))}
             <Box component="form" sx={{ mt: 2 }} onSubmit={(e) => { e.preventDefault(); addComment(); }}>
