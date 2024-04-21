@@ -27,12 +27,12 @@ function Profile ({role, setRole}: ProfileProps) {
         }
     };
 
-    /*
+
     const save = async () => {
         await client.updateUser(profile);
         alert("Update successful!");
     };
-
+/*
     const signout = async () => {
         await client.signout();
         navigate("/Home");
@@ -79,7 +79,7 @@ function Profile ({role, setRole}: ProfileProps) {
                 <label className="float-start" htmlFor="role">User Role: </label> {" "}
                 <input id="role" className="form-control" value={profile.role} readOnly={true}/>
                 <br/><br/>
-                <button className="btn btn-primary form-control" onClick={() =>console.log("Hello")}>
+                <button className="btn btn-primary form-control" onClick={save}>
                     Save
                 </button>
                 <br/><br/>

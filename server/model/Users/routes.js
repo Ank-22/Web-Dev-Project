@@ -72,11 +72,20 @@ export default function UserRoutes(app) {
       }
       else {
         const newUser = await dao.signUp(req.body);
+        currentUser = newUser;
         res.status(200).json(newUser);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
+  };
+
+  const profile = (req, res) => {
+    if (!currentUser) {
+      res.sendStatus(401);
+      return;
+    }
+    res.json(currentUser);
   };
 
   app.post("/api/users", createUser);
@@ -89,4 +98,5 @@ export default function UserRoutes(app) {
   app.get("/api/users/:userId/findUserRole", findUserRole);
   app.post("/api/users/signIn", signIn);
   app.post("/api/users/signUp", signUp);
+  app.post("/api/users/profile", profile);
 }
