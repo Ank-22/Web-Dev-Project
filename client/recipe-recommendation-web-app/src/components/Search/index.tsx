@@ -1,74 +1,82 @@
-// RecipeSearch.tsx
 import React, { useState, useEffect } from 'react';
-import { fetchRecipes, searchRecipesByName } from './client';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Box, TextField, Button, Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
+
+interface Recipe {
+  _id: string;
+  name: string;
+  imageUrl: string;
+  Likes: number;
+}
 
 const RecipeSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [recipes, setRecipes] = useState<any[]>([]); // Define a better type instead of any if possible
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [error, setError] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const loadRecipes = async () => {
-      const allRecipes = await fetchRecipes();
-      setRecipes(allRecipes);
-    };
-    loadRecipes();
+    // Fetch filters or initialize other data on mount
+    fetchRecipes();
   }, []);
 
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get('http://localhost:4000/api/recipes');
+      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
+    } catch (error: any) {
+      setError('Failed to fetch recipes');
+    }
+  };
+
   const handleSearch = async () => {
-    if (!searchTerm.trim()) return; // Avoid empty query search
-    const foundRecipes = await searchRecipesByName(searchTerm);
-    setRecipes(foundRecipes);
-    console.log(`Searching for recipes related to: ${searchTerm}`);
+    try {
+      const response = await axios.get(`http://localhost:4000/api/getRecipesByName/${searchTerm}`);
+      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
+    } catch (error: any) {
+      setError('Failed to search recipes');
+    }
   };
 
   return (
-    <div>
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-bar"
-          placeholder="Search for recipes..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button onClick={handleSearch}>Search</button>
-      </div>
-      <div className="categories">
-        {/* Categories here */}
-      </div>
-      <div>
-        <h1>Search Results</h1>
-        <div className="recipes-list">
-  {recipes.map((recipe, index) => (
-    <div key={index} className="recipe-card">
-      {/* Assuming imageUrl is part of the data model */}
-      <img src={recipe.imageUrl || "placeholder-image-url.jpg"} alt={recipe.name} className="recipe-image"/>
-      <div className="card-content">
-        <h3>{recipe.name}</h3>
-        <p><strong>Cuisine:</strong> {recipe.cuisines}</p>
-        <p><strong>Ingredients:</strong> {recipe.ingredients.join(', ')}</p>
-        <p><strong>Cooking Time:</strong> {recipe.cooking_time}</p>
-        <p><strong>Type:</strong> {recipe.type} {recipe.meat_type !== 'NA' && (`${recipe.meat_type}`)}</p>
-        <p><strong>Steps:</strong> {recipe.steps}</p>
-        <p><strong>Likes:</strong> {recipe.Likes}</p>
-        <div>
-          <strong>Comments:</strong>
-          {recipe.comments.length > 0 ? (
-            <ul>
-              {recipe.comments.map((comment:any, commentIndex:any) => (
-                <li key={commentIndex}>{comment}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>No comments yet.</p>
-          )}
-        </div>
-      </div>
-    </div>
-  ))}
-</div>
-      </div>
-    </div>
+    <Box sx={{ flexGrow: 1, m: 2 }}>
+      <Typography variant="h4" gutterBottom component="div">
+        Search Recipes
+      </Typography>
+      <TextField
+        fullWidth
+        label="Search for recipes..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        variant="outlined"
+        sx={{ mb: 2 }}
+      />
+      <Button variant="contained" onClick={handleSearch}>Search</Button>
+      {error && <Typography color="error">{error}</Typography>}
+      <Grid container spacing={2} sx={{ mt: 2 }}>
+        {recipes.map((recipe) => (
+          <Grid item xs={12} sm={6} md={4} key={recipe._id}>
+            <Card sx={{ maxWidth: 345, cursor: 'pointer' }} onClick={() => navigate(`/recipes/${recipe._id}`)}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={recipe.imageUrl || '/images/deafult.jpg'}
+                alt={recipe.name}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {recipe.name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Likes: {recipe.Likes}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 

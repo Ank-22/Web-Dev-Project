@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './index.css'
+import { Box, Button, Card, CardContent, CardMedia, Typography, TextField, IconButton } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CommentIcon from '@mui/icons-material/Comment';
 
 interface Recipe {
   id: string;
   name: string;
+  author: string;
   cuisines: string;
   ingredients: string[];
   cooking_time: string;
-  type: string;
+  type: 'veg' | 'non-veg' | 'vegan';
   meat_type: string;
-  steps: string;
-  imageUrl: string;  // Assuming this field is available and correct
+  steps: string[];
+  GroupID: string;
   Likes: number;
   comments: string[];
+  owner: string;
 }
 
 const RecipeDetail: React.FC = () => {
@@ -22,50 +26,105 @@ const RecipeDetail: React.FC = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [liked, setLiked] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>('');
 
   useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const response = await axios.get(`http://localhost:4000/api/recipes/661fcb55fda3c080a4f5f0ae`);
-        setRecipe(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to fetch recipe');
-        setLoading(false);
-      }
-    };
-
     fetchRecipe();
-  }, [recipeId]);
+  }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!recipe) return <div>No recipe found.</div>;
+  const fetchRecipe = async () => {
+    try {
+      const response = await axios.get<Recipe>(`http://localhost:4000/api/Recipes/${recipeId}`);
+      setRecipe(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch recipe');
+      setLoading(false);
+    }
+  };
+
+  const toggleLike = async () => {
+    try {
+      const newLikes = liked ? recipe!.Likes - 1 : recipe!.Likes + 1;
+      await axios.put(`http://localhost:4000/api/Recipes/like/${recipeId}`, { Likes: newLikes });
+      console.log(newLikes)
+      setRecipe({ ...recipe!, Likes: newLikes });
+      setLiked(!liked);
+    } catch (err) {
+      setError('Failed to update likes');
+    }
+  };
+
+  const addComment = async () => {
+    if (comment.trim()) {
+      try {
+        const updatedComments = [...recipe!.comments, comment];
+        await axios.post(`http://localhost:4000/api/Recipes/comment/${recipeId}`, { comments: updatedComments });
+        setRecipe({ ...recipe!, comments: updatedComments });
+        setComment('');
+      } catch (err) {
+        setError('Failed to add comment');
+      }
+    }
+  };
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>;
+  if (!recipe) return <Typography>No recipe found.</Typography>;
 
   return (
-    <div className="recipe-detail">
-      <h1>{recipe.name}</h1>
-      <img src={recipe.imageUrl || 'default-placeholder.png'} alt={recipe.name} style={{ width: '100%' }}/>
-      <h2>Ingredients</h2>
-      <ul>
-        {recipe.ingredients.map((ingredient, index) => (
-          <li key={index}>{ingredient}</li>
-        ))}
-      </ul>
-      <h2>Steps</h2>
-      <p>{recipe.steps}</p>
-      <h2>Comments</h2>
-      {recipe.comments.length > 0 ? (
-        <ul>
-          {recipe.comments.map((comment, index) => (
-            <li key={index}>{comment}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No comments yet.</p>
-      )}
-    </div>
+    <Box sx={{ maxWidth: 800, margin: 'auto', padding: 2 }}>
+      <Card>
+        <CardMedia
+          component="img"
+          height="300"
+          image={'/images/deafult.jpg'}
+          alt={recipe.name}
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {recipe.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Author: {recipe.author}<br />
+            Cuisine: {recipe.cuisines}<br />
+            Cooking Time: {recipe.cooking_time}<br />
+            Type: {recipe.type}<br />
+            Meat Type: {recipe.meat_type}<br />
+            Ingredients: {recipe.ingredients.join(', ')}<br />
+            Steps:
+            <ul>
+              {recipe.steps.map((step, index) => (
+                <li key={index}>{step}</li>
+              ))}
+            </ul>
+            <IconButton onClick={toggleLike} color={liked ? 'primary' : 'default'}>
+              <FavoriteIcon /> {recipe.Likes}
+            </IconButton>
+          </Typography>
+          <Typography sx={{ mt: 2 }}>
+            <strong>Comments:</strong>
+            {recipe.comments.map((c, index) => (
+              <Typography key={index} sx={{ mt: 1 }}>
+                {c}
+              </Typography>
+            ))}
+            <Box component="form" sx={{ mt: 2 }} onSubmit={(e) => { e.preventDefault(); addComment(); }}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Add a comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+              <Button type="submit" variant="contained" sx={{ mt: 1 }}>Submit</Button>
+            </Box>
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 
-export default RecipeDetail;
+export default RecipeDetail;

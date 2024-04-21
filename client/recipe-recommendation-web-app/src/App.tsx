@@ -4,6 +4,8 @@ import RecipeNavigation from "./components/Navigation";
 import Home from "./components/Home";
 import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import RecipeDetail from './components/Recipe';
+import RecipeSearch from './components/Search';
+import RecipeForm from './components/Recipe/create';
 
 
 function App() {
@@ -18,15 +20,15 @@ function App() {
             <Routes>
                 <Route path="/"         element={<Navigate to="/Home"/>}/>
                 <Route path="/Home"   element={<Home/>}/>
+                <Route path="/Search" element={<RecipeSearch/>}/>
+                <Route path="/Recipes/Create" element={<RecipeForm/>}/>
+                <Route path='/Recipes/:recipeId/*' element={<RecipeDetail/>}/>
             </Routes>
 
         </div>
         </HashRouter>
 
         <hr/>
-        <div>
-          <RecipeDetail/>
-        </div>
     </div>
   );
 }

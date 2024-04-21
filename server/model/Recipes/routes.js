@@ -54,13 +54,22 @@ export default function RecipeRoutes(app) {
     res.json(status);
   };
 
+  const modifyLikesCount = async(req,res) => {
+    const { recipeId } = req.params;
+    const { Likes } = req.body;
+    const status = await dao.modifyLikesCount(recipeId, Likes);
+    res.json (status );
+  }
+
   app.post("/api/createRecipes", createRecipe);
   app.get("/api/recipes", findAllRecipes);
   app.get("/api/recipes/:recipeId", findRecipeById);
   app.put("/api/recipes/:recipeId", updateRecipe);
   app.delete("/api/recipes/:recipeId", deleteRecipe);
-  app.put("/api/recipes/:recipeId/likes", modifyLikes);
+  // app.put("/api/Recipes/like/:recipeId", modifyLikes);
   app.post("/api/recipes/:recipeId/comments", addComment);
   app.put("/api/recipes/:recipeId/comments/:commentIndex", editComment);
   app.delete("/api/recipes/:recipeId/comments/:commentIndex", deleteComment);
+  app.put("/api/Recipes/like/:recipeId", modifyLikesCount);
+
 }

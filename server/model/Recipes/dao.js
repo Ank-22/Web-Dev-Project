@@ -19,3 +19,6 @@ export const editComment = (recipeId, commentIndex, editedComment) =>
 
 export const deleteComment = (recipeId, commentIndex) =>
   model.updateOne({ _id: recipeId }, { $pull: { comments: { $eq: commentIndex } } });
+
+export const modifyLikesCount = (recipeId, newLikes) => model.updateOne({ _id: recipeId }, { $set: { Likes: newLikes } });
+
