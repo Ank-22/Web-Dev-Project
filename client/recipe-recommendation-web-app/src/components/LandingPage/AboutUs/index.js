@@ -4,7 +4,7 @@ import axios from "axios"
 
 const AboutUs = () => {
     const handleUser = async () => {
-        await axios.get("http://localhost:4000/api/groups/");
+        await axios.get("http://localhost:4000/api/users");
     }
     return(
         <div style={{ display: 'flex' }}>
