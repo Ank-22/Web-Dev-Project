@@ -1,5 +1,7 @@
 import * as dao from "./dao.js";
+import User from "../Users/model.js"
 
+let currentUser = null;
 export default function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -18,8 +20,8 @@ export default function UserRoutes(app) {
   };
 
   const findAllUsers = async (req, res) => {
-    const users = await dao.findAllUsers();
-    res.json(users);
+    //const users = await dao.findAllUsers();
+    res.json(currentUser);
   };
 
   const findUserById = async (req, res) => {
@@ -47,14 +49,34 @@ export default function UserRoutes(app) {
   };
 
   const signIn = async (req, res) => {
-    const { username, password } = req.body;
-    const user = await dao.signIn(username, password);
-    res.json(user);
+    try {
+      const {username, password} = req.body;
+      const user = await dao.signIn(username, password);
+      if (user) {
+        currentUser = user;
+        res.status(200).json(currentUser);
+      }
+      else {
+        res.status(404).json({message: "User not found"});
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   };
 
   const signUp = async (req, res) => {
-    const user = await dao.signUp(req.body);
-    res.json(user);
+    try {
+      const existingUser = await User.findOne({ username: req.body.username });
+      if (existingUser) {
+        res.status(400).json({ message: "Username already taken" });
+      }
+      else {
+        const newUser = await dao.signUp(req.body);
+        res.status(200).json(newUser);
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   };
 
   app.post("/api/users", createUser);

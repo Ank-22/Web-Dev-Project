@@ -1,4 +1,4 @@
-import User from "./schema.js";
+import User from "./model.js";
 
 export const createUser = (user) => User.create(user);
 
