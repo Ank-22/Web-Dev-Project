@@ -2,6 +2,7 @@ import {Button, Modal} from "react-bootstrap";
 import React, {useState} from "react";
 import axios from "axios";
 import * as client from '../../UserServices/client'
+import {useNavigate} from "react-router-dom";
 
 function LoginModal(props: any) {
     const { setLoggedIn, show, onHide} = props;
@@ -13,6 +14,8 @@ function LoginModal(props: any) {
         }
     );
 
+    const navigate = useNavigate();
+
     const handleChange = (e: any) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
@@ -23,6 +26,8 @@ function LoginModal(props: any) {
             setErrorMsg('');
             onHide();
             setLoggedIn(true);
+            navigate(`/Profile`);
+
         } catch (error: any) {
             if (error.response.status === 404) {
                 setErrorMsg("User does not exist");
