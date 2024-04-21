@@ -4,6 +4,8 @@ import LandingPage from "./components/LandingPage/header";
 import RecipeNavigation from "./components/Navigation";
 import AboutUs from "./components/LandingPage/AboutUs";
 import {SlArrowDown} from "react-icons/sl";
+import RecipeSearch from './components/Search';
+import RecipeDetail from './components/Recipe';
 
 function App() {
   return (
@@ -22,6 +24,10 @@ function App() {
             </div>
         </div>
 
+        <hr/>
+        <div>
+          <RecipeDetail/>
+        </div>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function RecipeRoutes(app) {
     res.json(status);
   };
 
-  app.post("/api/recipes", createRecipe);
+  app.post("/api/createRecipes", createRecipe);
   app.get("/api/recipes", findAllRecipes);
   app.get("/api/recipes/:recipeId", findRecipeById);
   app.put("/api/recipes/:recipeId", updateRecipe);
