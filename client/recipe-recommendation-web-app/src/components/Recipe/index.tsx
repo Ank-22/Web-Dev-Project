@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Box, Button, Card, CardContent, CardMedia, Typography, TextField, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
-export const BASE_API = process.env.REACT_APP_BASE_API_URL;
+export const BASE_API = process.env.REACT_APP_API_BASE;
 
 interface Comment {
   author: string;
