@@ -1,6 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
+export const BASE_API = process.env.REACT_APP_BASE_API_URL;
 
 interface FormValues {
   name: string;
@@ -29,7 +30,7 @@ const RecipeForm: React.FC = () => {
     },
     onSubmit: async (values) => {
       console.log(JSON.stringify(values, null, 2)); // Log the values to check
-      const response = await fetch('http://localhost:4000/api/recipes', {
+      const response = await fetch(`${BASE_API}/api/recipes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

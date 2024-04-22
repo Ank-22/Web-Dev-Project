@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Box, Button, Card, CardContent, CardMedia, Typography, TextField, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
+export const BASE_API = process.env.REACT_APP_BASE_API_URL;
 
 interface Comment {
   author: string;
@@ -47,7 +48,7 @@ const RecipeDetail: React.FC = () => {
 
   const fetchRecipe = async () => {
     try {
-      const response = await axios.get<Recipe>(`http://localhost:4000/api/recipes/${recipeId}`);
+      const response = await axios.get<Recipe>(`${BASE_API}/api/recipes/${recipeId}`);
       setRecipe(response.data);
       setLoading(false);
     } catch (err) {
@@ -58,7 +59,7 @@ const RecipeDetail: React.FC = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get<User>("http://localhost:4000/api/users");
+      const response = await axios.get<User>(`${BASE_API}/api/users`);
       setUser(response.data);
     } catch (err) {
       console.error('Failed to fetch user data');
@@ -68,7 +69,7 @@ const RecipeDetail: React.FC = () => {
   const toggleLike = async () => {
     try {
       const newLikes = liked ? recipe!.Likes - 1 : recipe!.Likes + 1;
-      await axios.put(`http://localhost:4000/api/recipes/like/${recipeId}`, { Likes: newLikes });
+      await axios.put(`${BASE_API}/api/recipes/like/${recipeId}`, { Likes: newLikes });
       setRecipe({ ...recipe!, Likes: newLikes });
       setLiked(!liked);
     } catch (err) {
@@ -80,7 +81,7 @@ const RecipeDetail: React.FC = () => {
     if (comment.trim()) {
       try {
         const newComment = { author: user?.username || "Anonymous", text: comment };
-        const updatedRecipe = await axios.post(`http://localhost:4000/api/recipes/${recipeId}/comments`, { comment: newComment });
+        const updatedRecipe = await axios.post(`${BASE_API}/api/recipes/${recipeId}/comments`, { comment: newComment });
         setRecipe(updatedRecipe.data);
         setComment('');
       } catch (err) {
@@ -99,7 +100,7 @@ const RecipeDetail: React.FC = () => {
         <CardMedia
           component="img"
           height="300"
-          image={recipe.imageUrl || '/images/default.jpg'}
+          image={'/images/default.jpg' || recipe.imageUrl}
           alt={recipe.name}
         />
         <CardContent>

@@ -5,6 +5,7 @@ import {CgProfile} from "react-icons/cg";
 import {useLocation, useNavigate} from "react-router-dom";
 import {MdManageAccounts} from "react-icons/md";
 import {FaUser} from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 import {useEffect, useState} from "react";
 
 function HorizontalSideNav ({loggedIn, role}) {
@@ -45,6 +46,10 @@ function HorizontalSideNav ({loggedIn, role}) {
                 <NavItem eventKey="Home">
                     <NavIcon><FaHome style={{fontSize: "1.5rem"}} /></NavIcon>
                     <NavText>Home</NavText>
+                </NavItem>
+                <NavItem eventKey="Search">
+                    <NavIcon><FaSearch  style={{fontSize: "1.5rem"}} /></NavIcon>
+                    <NavText>Search</NavText>
                 </NavItem>
 
             </SideNav.Nav>
