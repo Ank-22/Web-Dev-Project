@@ -6,6 +6,7 @@ import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import RecipeDetail from './components/Recipe';
 import HorizontalSideNav from "./components/Navigation/SideNav";
 import Profile from "./components/Profile";
+import ManageUsers from "./components/ManageUsers";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/"         element={<Navigate to="/Home"/>}/>
                 <Route path="/Home"   element={<Home/>}/>
                 <Route path="/Profile" element={<Profile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
+                <Route path="/ManageUsers"   element={<ManageUsers/>}/>
             </Routes>
 
         </div>

@@ -20,8 +20,20 @@ export default function UserRoutes(app) {
   };
 
   const findAllUsers = async (req, res) => {
-    //const users = await dao.findAllUsers();
-    res.json(currentUser);
+    const { role } = req.query;
+    if (role) {
+      if (role === "member") {
+        const users = await dao.findAllUsers();
+        res.json(users);
+        return;
+      } else {
+        const users = await dao.findUsersByRole(role);
+        res.json(users);
+        return;
+      }
+    }
+    const users = await dao.findAllUsers();
+    res.json(users);
   };
 
   const findUserById = async (req, res) => {
@@ -42,11 +54,6 @@ export default function UserRoutes(app) {
     res.json(status);
   };
 
-  const findUserRole = async (req, res) => {
-    const { userId } = req.params;
-    const userRole = await dao.findUserRole(userId);
-    res.json(userRole);
-  };
 
   const signIn = async (req, res) => {
     try {
@@ -100,7 +107,6 @@ export default function UserRoutes(app) {
   app.get("/api/users/:userId", findUserById);
   app.post("/api/users/addUserGroup", addUserGroup);
   app.put("/api/users/:userId/updatePassword", updatePassword);
-  app.get("/api/users/:userId/findUserRole", findUserRole);
   app.post("/api/users/signIn", signIn);
   app.post("/api/users/signUp", signUp);
   app.post("/api/users/profile", profile);

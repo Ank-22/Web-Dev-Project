@@ -32,3 +32,25 @@ export const signout = async () => {
     const response = await api.post(`${USERS_API}/signout`);
     return response.data;
 };
+
+export const findUserById = async (id: string) => {
+    const response = await api.get(`${USERS_API}/${id}`);
+    return response.data;
+};
+
+export const deleteUser = async (user: any) => {
+    const response = await api.delete(
+        `${USERS_API}/${user._id}`);
+    return response.data;
+};
+
+export const findAllUsers = async () => {
+    const response = await api.get(`${USERS_API}`);
+    return response.data;
+};
+
+export const findUsersByRole = async (role: string) => {
+    const response = await
+        api.get(`${USERS_API}?role=${role}`);
+    return response.data;
+};
