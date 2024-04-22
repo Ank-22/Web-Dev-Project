@@ -17,3 +17,40 @@ export const signIn = async (credentials: any) => {
     const response = await api.post( `${USERS_API}/signIn`, credentials );
     return response.data;
 };
+
+export const profile = async () => {
+    const response = await api.post(`${USERS_API}/profile`);
+    return response.data;
+};
+
+export const updateUser = async (user: any) => {
+    const response = await api.put(`${USERS_API}/${user._id}`, user);
+    return response.data;
+};
+
+export const signout = async () => {
+    const response = await api.post(`${USERS_API}/signout`);
+    return response.data;
+};
+
+export const findUserById = async (id: string) => {
+    const response = await api.get(`${USERS_API}/${id}`);
+    return response.data;
+};
+
+export const deleteUser = async (user: any) => {
+    const response = await api.delete(
+        `${USERS_API}/${user._id}`);
+    return response.data;
+};
+
+export const findAllUsers = async () => {
+    const response = await api.get(`${USERS_API}`);
+    return response.data;
+};
+
+export const findUsersByRole = async (role: string) => {
+    const response = await
+        api.get(`${USERS_API}?role=${role}`);
+    return response.data;
+};

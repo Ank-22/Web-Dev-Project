@@ -1,6 +1,7 @@
 import {Button, Modal} from "react-bootstrap";
 import React, {useState} from "react";
 import * as client from "../../UserServices/client"
+import {useNavigate} from "react-router-dom";
 
 function SignUpModal(props: any) {
     const { show, onHide} = props;
@@ -18,6 +19,8 @@ function SignUpModal(props: any) {
         group: []
     }
     const [signUpData, setSignUpData] = useState(blankSignUpForm);
+    const navigate = useNavigate();
+
 
     const handleChange = (e: any) => {
         setSignUpData({ ...signUpData, [e.target.name]: e.target.value });
@@ -32,6 +35,7 @@ function SignUpModal(props: any) {
             const newUser = await client.createUser(userData);
             setErrorMsg('');
             onHide();
+            navigate(`/Profile`);
         }
         catch (error: any) {
             if (error.response.status === 400) {
