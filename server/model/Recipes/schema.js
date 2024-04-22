@@ -8,7 +8,7 @@ const commentSchema = new mongoose.Schema({
 
 // Recipe Schema
 const recipeSchema = new mongoose.Schema({
-  id: { type: String, required: true },
+  id: { type: String },
   name: { type: String, required: true },
   author: { type: String, required: true },
   cuisines: { type: String, required: true },
@@ -21,8 +21,8 @@ const recipeSchema = new mongoose.Schema({
   Likes: { type: Number, default: 0 },
   likeByUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],  // Assuming User model exists
   comments: [commentSchema],
-  owner: { type: String, required: true },
-  imageUrl: { type: String, required: true }
+  owner: { type: String },
+  imageUrl: { type: String }
 });
 
 

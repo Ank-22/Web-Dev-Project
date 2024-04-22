@@ -5,6 +5,11 @@ import { Box, Button, Card, CardContent, CardMedia, Typography, TextField, IconB
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
 
+interface Comment {
+  author: string;
+  text: string;
+}
+
 interface Recipe {
   id: string;
   name: string;
@@ -19,15 +24,11 @@ interface Recipe {
   Likes: number;
   comments: Comment[];
   owner: string;
+  imageUrl: string;
 }
 
-interface Comment{
-  author: string;
-  text: string;
-}
-
-const handleUser = async () => {
-  await axios.get("http://localhost:4000/api/users");
+interface User {
+  username: string;
 }
 
 const RecipeDetail: React.FC = () => {
@@ -37,14 +38,16 @@ const RecipeDetail: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [liked, setLiked] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     fetchRecipe();
+    fetchUser();
   }, []);
 
   const fetchRecipe = async () => {
     try {
-      const response = await axios.get<Recipe>(`http://localhost:4000/api/Recipes/${recipeId}`);
+      const response = await axios.get<Recipe>(`http://localhost:4000/api/recipes/${recipeId}`);
       setRecipe(response.data);
       setLoading(false);
     } catch (err) {
@@ -53,11 +56,19 @@ const RecipeDetail: React.FC = () => {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get<User>("http://localhost:4000/api/users");
+      setUser(response.data);
+    } catch (err) {
+      console.error('Failed to fetch user data');
+    }
+  };
+
   const toggleLike = async () => {
     try {
       const newLikes = liked ? recipe!.Likes - 1 : recipe!.Likes + 1;
-      await axios.put(`http://localhost:4000/api/Recipes/like/${recipeId}`, { Likes: newLikes });
-      console.log(newLikes)
+      await axios.put(`http://localhost:4000/api/recipes/like/${recipeId}`, { Likes: newLikes });
       setRecipe({ ...recipe!, Likes: newLikes });
       setLiked(!liked);
     } catch (err) {
@@ -66,16 +77,16 @@ const RecipeDetail: React.FC = () => {
   };
 
   const addComment = async () => {
-    // if (comment.trim()) {
-    //   try {
-    //     const updatedComments = [...recipe!.comments, comment];
-    //     await axios.post(`http://localhost:4000/api/Recipes/comment/${recipeId}`, { comments: updatedComments });
-    //     setRecipe({ ...recipe!, comments: updatedComments });
-    //     setComment('');
-    //   } catch (err) {
-    //     setError('Failed to add comment');
-    //   }
-    // }
+    if (comment.trim()) {
+      try {
+        const newComment = { author: user?.username || "Anonymous", text: comment };
+        const updatedRecipe = await axios.post(`http://localhost:4000/api/recipes/${recipeId}/comments`, { comment: newComment });
+        setRecipe(updatedRecipe.data);
+        setComment('');
+      } catch (err) {
+        setError('Failed to add comment');
+      }
+    }
   };
 
   if (loading) return <Typography>Loading...</Typography>;
@@ -88,7 +99,7 @@ const RecipeDetail: React.FC = () => {
         <CardMedia
           component="img"
           height="300"
-          image={'/images/deafult.jpg'}
+          image={recipe.imageUrl || '/images/default.jpg'}
           alt={recipe.name}
         />
         <CardContent>
@@ -114,9 +125,9 @@ const RecipeDetail: React.FC = () => {
           </Typography>
           <Typography sx={{ mt: 2 }}>
             <strong>Comments:</strong>
-            {recipe.comments.map((comment, index) => (
+            {recipe.comments.map((c, index) => (
               <Typography key={index} sx={{ mt: 1 }}>
-                <strong>{comment.author}</strong>: {comment.text}
+                <strong>{c.author}</strong>: {c.text}
               </Typography>
             ))}
             <Box component="form" sx={{ mt: 2 }} onSubmit={(e) => { e.preventDefault(); addComment(); }}>

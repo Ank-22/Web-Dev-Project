@@ -6,6 +6,7 @@ import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import RecipeDetail from './components/Recipe';
 import RecipeSearch from './components/Search';
 import RecipeForm from './components/Recipe/create';
+import GroupsPage from './components/Groups';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/Search" element={<RecipeSearch/>}/>
                 <Route path="/Recipes/Create" element={<RecipeForm/>}/>
                 <Route path='/Recipes/:recipeId/*' element={<RecipeDetail/>}/>
+                <Route path="/Groups" element={<GroupsPage/>}/>
             </Routes>
 
         </div>
