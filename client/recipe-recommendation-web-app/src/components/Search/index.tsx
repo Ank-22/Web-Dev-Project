@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, TextField, Button, Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
+export const BASE_API = process.env.REACT_APP_BASE_API_URL;
 
 interface Recipe {
   _id: string;
@@ -28,7 +29,7 @@ const RecipeSearch: React.FC = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await request.get('http://localhost:4000/api/recipes');
+      const response = await request.get(`${BASE_API}/api/recipes`);
       setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
     } catch (error: any) {
       setError('Failed to fetch recipes');
@@ -38,7 +39,7 @@ const RecipeSearch: React.FC = () => {
   const handleSearch = async () => {
     try {
       console.log(searchTerm)
-      const response = await axios.get(`http://localhost:4000/api/recipes/search?keyword=${searchTerm}`);
+      const response = await axios.get(`${BASE_API}/api/recipes/search?keyword=${searchTerm}`);
       setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes))
       console.log("After API")
       return response.data;
@@ -69,7 +70,7 @@ const RecipeSearch: React.FC = () => {
               <CardMedia
                 component="img"
                 height="140"
-                image={recipe.imageUrl ||'/images/deafult.jpg'}
+                image={'/images/deafult.jpg' || recipe.imageUrl }
                 alt={recipe.name}
               />
               <CardContent>

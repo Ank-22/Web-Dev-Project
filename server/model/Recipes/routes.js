@@ -29,6 +29,15 @@ export default function RecipeRoutes(app) {
     }
   });
 
+  app.put("/api/recipes/like/:recipeId", async (req, res) => {
+    try {
+      const result = await dao.modifyLikes(req.params.recipeId, req.body.userId);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to modify likes", error });
+    }
+  });
+
   app.get("/api/recipes/:recipeId", async (req, res) => {
     try {
       const recipe = await dao.findRecipeById(req.params.recipeId);
@@ -56,14 +65,7 @@ export default function RecipeRoutes(app) {
     }
   });
 
-  app.put("/api/recipes/:recipeId/likes", async (req, res) => {
-    try {
-      const result = await dao.modifyLikes(req.params.recipeId, req.body.userId);
-      res.json(result);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to modify likes", error });
-    }
-  });
+
 
   app.post("/api/recipes/:recipeId/comments", async (req, res) => {
     try {
