@@ -1,4 +1,4 @@
 import mongoose from "mongoose";
-import schema from "./schema.js";
-const model = mongoose.model("GroupModel", schema);
+import groupSchema from "./schema.js";
+const model = mongoose.model("Group", groupSchema);
 export default model;
