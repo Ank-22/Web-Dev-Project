@@ -1,6 +1,9 @@
 import User from "./model.js";
 
-export const createUser = (user) => User.create(user);
+export const createUser = (user) => {
+  delete user._id;
+  User.create(user)
+};
 
 export const deleteUser = (userId) => User.deleteOne({ _id: userId });
 
@@ -20,7 +23,7 @@ export const addUserGroup = (userId, groupId, role) =>
 export const updatePassword = (userId, newPassword) =>
   User.updateOne({ _id: userId }, { $set: { password: newPassword } });
 
-export const findUserRole = (userId) => User.findById(userId, { role: 1 });
+export const findUsersByRole = (role) => User.find({ role: role });
 
 export const signIn = (username, password) =>
   User.findOne({ username: username, password: password });

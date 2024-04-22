@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import RecipeNavigation from "./components/Navigation";
 import Home from "./components/Home";
@@ -7,17 +7,27 @@ import RecipeDetail from './components/Recipe';
 import RecipeSearch from './components/Search';
 import RecipeForm from './components/Recipe/create';
 import GroupsPage from './components/Groups';
+import HorizontalSideNav from "./components/Navigation/SideNav";
+import Profile from "./components/Profile";
+import ManageUsers from "./components/ManageUsers";
+
 
 
 function App() {
-  return (
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [role, setRole] = useState("");
+
+    return (
     <div className="App color-sand container-fluid px-0">
-        <div>
-            <RecipeNavigation />
+        <HashRouter>
+        <HorizontalSideNav loggedIn={loggedIn} role={role}/>
+        <div className="right-shift">
+            <RecipeNavigation loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+
         </div>
 
-        <HashRouter>
-        <div className="downshift">
+
+        <div className="down-shift right-shift">
             <Routes>
                 <Route path="/"         element={<Navigate to="/Home"/>}/>
                 <Route path="/Home"   element={<Home/>}/>
@@ -25,12 +35,13 @@ function App() {
                 <Route path="/Recipes/Create" element={<RecipeForm/>}/>
                 <Route path='/Recipes/:recipeId/*' element={<RecipeDetail/>}/>
                 <Route path="/Groups" element={<GroupsPage/>}/>
+                <Route path="/Profile" element={<Profile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
+                <Route path="/ManageUsers"   element={<ManageUsers/>}/>
             </Routes>
 
         </div>
         </HashRouter>
 
-        <hr/>
     </div>
   );
 }
