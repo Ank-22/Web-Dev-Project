@@ -39,6 +39,7 @@ app.use(
 Hello(app)
 GroupItemRoutes(app)
 GroupRoutes(app)
+GroupItemRoutes(app)
 RecipeRoutes(app)
 UserRoutes(app)
 app.listen(process.env.PORT || 4000);

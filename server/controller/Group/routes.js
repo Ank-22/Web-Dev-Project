@@ -24,6 +24,7 @@ export default function GroupRoutes(app) {
 
   const findGroupById = async (req, res) => {
     try {
+     
       const group = await dao.findGroupById(req.params.groupId);
       res.json(group);
     } catch (error) {

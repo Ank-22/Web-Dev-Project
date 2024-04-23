@@ -1,35 +1,69 @@
-import * as dao from "./dao.js";
+// groupItemRoutes.js
+import express from 'express';
+import * as dao from './dao.js';
 
 export default function GroupItemRoutes(app) {
-  const createGroupItem = async (req, res) => {
-    const groupItem = await dao.createGroupItem(req.body);
-    res.json(groupItem);
-  };
+    app.post('/api/group-items', async (req, res) => {
+        try {
+            const item = await dao.createGroupItem(req.body);
+            res.status(201).json(item);
+        } catch (error) {
+            res.status(400).json({ message: 'Failed to create group item', error: error.message });
+        }
+    });
 
-  const deleteGroupItem = async (req, res) => {
-    const status = await dao.deleteGroupItem(req.params.itemId);
-    res.json(status);
-  };
+    app.get('/api/group-items', async (req, res) => {
+        try {
+            const items = await dao.findAllGroupItems();
+            res.json(items);
+        } catch (error) {
+            res.status(500).json({ message: 'Failed to retrieve group items', error: error.message });
+        }
+    });
 
-  const updateGroupItem = async (req, res) => {
-    const { itemId } = req.params;
-    const status = await dao.updateGroupItem(itemId, req.body);
-    res.json(status);
-  };
+    app.get('/api/group-items/group/:groupId', async (req, res) => {
+        try {
+            const { groupId } = req.params;
+            console.log(groupId)
+            const items = await dao.findGroupItemsByGroupId(groupId);
+            if(items.length > 0) {
+                res.json(items);
+            } else {
+                res.status(404).json({ message: 'No items found for this group' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Failed to retrieve group items', error: error.message });
+        }
+    });
 
-  const findAllGroupItems = async (req, res) => {
-    const groupItems = await dao.findAllGroupItems();
-    res.json(groupItems);
-  };
+    app.get('/api/group-items/:id', async (req, res) => {
+        try {
+            const item = await dao.findGroupItemById(req.params.id);
+            if (item) {
+                res.json(item);
+            } else {
+                res.status(404).json({ message: 'Group item not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: 'Failed to retrieve group item', error: error.message });
+        }
+    });
 
-  const findGroupItemById = async (req, res) => {
-    const groupItem = await dao.findGroupItemById(req.params.itemId);
-    res.json(groupItem);
-  };
+    app.put('/api/group-items/:id', async (req, res) => {
+        try {
+            const updatedItem = await dao.updateGroupItem(req.params.id, req.body);
+            res.json(updatedItem);
+        } catch (error) {
+            res.status(400).json({ message: 'Failed to update group item', error: error.message });
+        }
+    });
 
-  app.post("/api/group-items", createGroupItem);
-  app.delete("/api/group-items/:itemId", deleteGroupItem);
-  app.put("/api/group-items/:itemId", updateGroupItem);
-  app.get("/api/group-items", findAllGroupItems);
-  app.get("/api/group-items/:itemId", findGroupItemById);
+    app.delete('/api/group-items/:id', async (req, res) => {
+        try {
+            await dao.deleteGroupItem(req.params.id);
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ message: 'Failed to delete group item', error: error.message });
+        }
+    });
 }

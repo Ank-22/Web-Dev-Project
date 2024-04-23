@@ -8,7 +8,7 @@ import {FaUser} from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import {useEffect, useState} from "react";
 import { CgFileAdd } from "react-icons/cg";
-import { MdOutlineAddCircleOutline, MdOutlineGroupAdd  } from "react-icons/md";
+import { MdOutlineAddCircleOutline, MdOutlineGroupAdd, MdOutlineGroups  } from "react-icons/md";
 
 
 function HorizontalSideNav ({loggedIn, role}) {
@@ -56,7 +56,7 @@ function HorizontalSideNav ({loggedIn, role}) {
                 </NavItem>
 
 
-{loggedIn &&
+        {loggedIn &&
                     <NavItem eventKey={"Create"}>
                         <NavIcon><MdOutlineAddCircleOutline  style={{fontSize: "1.5rem"}}/></NavIcon>
                         <NavText>Create</NavText>
@@ -72,6 +72,12 @@ function HorizontalSideNav ({loggedIn, role}) {
                         }
 
                     </NavItem>
+                }
+                {loggedIn && 
+                     <NavItem eventKey="Groups">
+                     <NavIcon><MdOutlineGroups style={{fontSize: "1.5rem"}} /></NavIcon>
+                     <NavText>Groups</NavText>
+                 </NavItem>
                 }
             </SideNav.Nav>
         </SideNav>

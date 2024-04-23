@@ -55,3 +55,9 @@ export const findUsersByRole = async (role: string) => {
         api.get(`${USERS_API}?role=${role}`);
     return response.data;
 };
+
+export const findUsersByUsername = async (username: string) => {
+    const response = await
+        api.get(`${USERS_API}/findUserByUsername/${username}`);
+    return response.data;
+};

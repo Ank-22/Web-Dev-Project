@@ -1,12 +1,9 @@
-import GroupItem from "./schema.js";
 
-export const createGroupItem = (groupItem) => GroupItem.create(groupItem);
+import model from './schema.js';
 
-export const deleteGroupItem = (itemId) => GroupItem.deleteOne({ id: itemId });
-
-export const updateGroupItem = (itemId, groupItemData) =>
-  GroupItem.updateOne({ id: itemId }, { $set: groupItemData });
-
-export const findAllGroupItems = () => GroupItem.find();
-
-export const findGroupItemById = (itemId) => GroupItem.findOne({ id: itemId });
+export const createGroupItem = async (groupItem) => model.create(groupItem);
+export const findAllGroupItems = () => model.find();
+export const findGroupItemById = (id) => model.findById(id);
+export const findGroupItemsByGroupId = (groupId) => model.find({ groupId });
+export const updateGroupItem = (id, groupItemData) => model.findByIdAndUpdate(id, { $set: groupItemData }, { new: true });
+export const deleteGroupItem = (id) => model.findByIdAndDelete(id);

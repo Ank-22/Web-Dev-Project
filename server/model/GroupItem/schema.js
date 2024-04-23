@@ -1,11 +1,14 @@
-import mongoose from "mongoose";
+// models/groupItemModel.js
+import mongoose from 'mongoose';
 
 const groupItemSchema = new mongoose.Schema({
-  id: String,
-  group_id: String,
+  groupId: { type: String, ref: 'Group', required: true },
   name: { type: String, required: true },
-  description: String,
-  steps: String,
+  type: { type: String, enum: ['post', 'question'], required: true },
+  content: { type: String, required: true },
+  createdBy: { type: String, ref: 'User', required: true },
+  createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model("GroupItem", groupItemSchema);
+const GroupItem = mongoose.model('GroupItem', groupItemSchema);
+export default GroupItem;
