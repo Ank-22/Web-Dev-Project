@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import axios from 'axios';
 
@@ -19,6 +20,7 @@ interface Group {
 
 const GroupsPage = () => {
   const [groups, setGroups] = useState<Group[]>([]);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -34,7 +36,7 @@ const GroupsPage = () => {
       <Grid container spacing={2}>
         {groups.map((group) => (
           <Grid item key={group._id} xs={12} md={6} lg={4}>
-            <Card>
+            <Card sx={{ maxWidth: 345, cursor: 'pointer' }} onClick={() => navigate(`/groups/${group._id}`)}>
               <CardContent>
                 <Typography variant="h5">{group.name}</Typography>
                 <Typography variant="body2">{group.description}</Typography>

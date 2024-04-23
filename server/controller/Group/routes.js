@@ -23,8 +23,12 @@ export default function GroupRoutes(app) {
   };
 
   const findGroupById = async (req, res) => {
-    const group = await dao.findGroupById(req.params.groupId);
-    res.json(group);
+    try {
+      const group = await dao.findGroupById(req.params.groupId);
+      res.json(group);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to find group", error: error.message });
+    }
   };
 
   app.post("/api/groups", createGroup);
