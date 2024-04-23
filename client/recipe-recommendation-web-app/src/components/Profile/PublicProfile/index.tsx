@@ -78,15 +78,6 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
           <Typography variant="body1" color="text.secondary">
             Email: {profile.email}
           </Typography>
-          <br />
-          <Button
-            variant="contained"
-            color="error"
-            onClick={signout}
-            fullWidth
-          >
-            Sign Out
-          </Button>
         </CardContent>
       </Card>
     </Container>

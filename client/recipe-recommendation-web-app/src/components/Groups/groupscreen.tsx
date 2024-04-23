@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Box,
@@ -21,6 +21,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import GroupIcon from '@mui/icons-material/Group';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
+import * as client from "../UserServices/client"
+
 
 export const BASE_API = process.env.REACT_APP_API_BASE;
 
@@ -28,6 +30,7 @@ interface User {
   role: string;
   userId: string;
   first_name: string;
+  username: string;
   _id: string;
 }
 
@@ -64,11 +67,13 @@ const ExpandMore = styled((props: any) => {
 }));
 
 const GroupScreen = () => {
+    const navigate = useNavigate();
   const { groupId } = useParams();
   const [group, setGroup] = useState<Group | null>(null);
   const [membersDetails, setMembersDetails] = useState<User[]>([]);
   const [expanded, setExpanded] = useState(false);
-
+  const [profile, setProfile] = useState({ _id: "", username: "", password: "",
+  first_name: "", last_name: "", email: "", country: "", age: ""});
   useEffect(() => {
     const fetchGroup = async () => {
       try {
@@ -100,7 +105,17 @@ const GroupScreen = () => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+  const fetchProfileById = async (userID:string) => {
+    try {
+        const account = await client.findUserById(userID);
+        if (account) {
+            setProfile(account);
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        navigate("/Home");
+    }
+};
   return (
     <Container>
       <Box mt={2} mb={2}>
@@ -134,7 +149,7 @@ const GroupScreen = () => {
               <Grid container spacing={2} sx={{ maxHeight: 300, overflowY: 'auto' }}>
                 {membersDetails.map(member => (
                   <Grid item key={member._id} xs={12} sm={6} md={4}>
-                    <Card>
+                    <Card onClick={() => navigate(`/PublicProfile/${member.username}`)}>
                       <List>
                         <ListItem>
                           <ListItemAvatar>
@@ -151,7 +166,9 @@ const GroupScreen = () => {
               </Grid>
             </Collapse>
             <Typography variant="h5" sx={{ mt: 4 }} gutterBottom>
+              <div style={{margin:"10px", padding:'10px'}}>
               Posts
+              </div>
             </Typography>
             <Grid container spacing={2}>
               {group.posts?.map((post, index) => (
@@ -168,7 +185,9 @@ const GroupScreen = () => {
                     <CardContent>
                       <Typography variant="h6">{post.name}</Typography>
                       <Typography variant="caption" display="block" color="text.secondary">
+                        <div onClick={() => navigate(`/PublicProfile/${post.createdBy}`)}>
                         Created By: {post.createdBy}
+                        </div>
                       </Typography>
                       <Typography variant="body2" >
                         {post.content}
