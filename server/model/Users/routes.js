@@ -1,7 +1,6 @@
-import * as dao from "./dao.js";
-import User from "../Users/model.js"
-
+import * as dao from './dao.js'
 let currentUser = null;
+
 export default function UserRoutes(app) {
   const createUser = async (req, res) => {
     const user = await dao.createUser(req.body);
@@ -20,7 +19,7 @@ export default function UserRoutes(app) {
   };
 
   const findAllUsers = async (req, res) => {
-    const { role } = req.query;
+    const { role, username } = req.query;
     if (role) {
       if (role === "member") {
         const users = await dao.findAllUsers();
@@ -32,12 +31,22 @@ export default function UserRoutes(app) {
         return;
       }
     }
+    if (username) {
+      const user = await dao.findUserByUsername(username);
+      res.json(user);
+      return;
+    }
     const users = await dao.findAllUsers();
     res.json(users);
   };
 
   const findUserById = async (req, res) => {
     const user = await dao.findUserById(req.params.userId);
+    res.json(user);
+  };
+
+  const findUserByUsername = async (req, res) => {
+    const user = await dao.findUserByUsername(req.params.username);
     res.json(user);
   };
 
@@ -54,17 +63,15 @@ export default function UserRoutes(app) {
     res.json(status);
   };
 
-
   const signIn = async (req, res) => {
     try {
-      const {username, password} = req.body;
+      const { username, password } = req.body;
       const user = await dao.signIn(username, password);
       if (user) {
         currentUser = user;
         res.status(200).json(currentUser);
-      }
-      else {
-        res.status(404).json({message: "User not found"});
+      } else {
+        res.status(404).json({ message: "User not found" });
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -76,8 +83,7 @@ export default function UserRoutes(app) {
       const existingUser = await User.findOne({ username: req.body.username });
       if (existingUser) {
         res.status(400).json({ message: "Username already taken" });
-      }
-      else {
+      } else {
         const newUser = await dao.signUp(req.body);
         currentUser = newUser;
         res.status(200).json(newUser);
@@ -94,6 +100,7 @@ export default function UserRoutes(app) {
     }
     res.json(currentUser);
   };
+
   const signout = (req, res) => {
     req.session.destroy();
     currentUser = null;
@@ -111,5 +118,5 @@ export default function UserRoutes(app) {
   app.post("/api/users/signUp", signUp);
   app.post("/api/users/profile", profile);
   app.post("/api/users/signout", signout);
-
+  app.get("/api/users/findUserByUsername/:username", findUserByUsername);
 }
