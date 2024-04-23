@@ -7,6 +7,7 @@ import {MdManageAccounts} from "react-icons/md";
 import {FaUser} from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import {useEffect, useState} from "react";
+import { CgFileAdd } from "react-icons/cg";
 
 function HorizontalSideNav ({loggedIn, role}) {
     const navigate = useNavigate();
@@ -51,6 +52,12 @@ function HorizontalSideNav ({loggedIn, role}) {
                     <NavIcon><FaSearch  style={{fontSize: "1.5rem"}} /></NavIcon>
                     <NavText>Search</NavText>
                 </NavItem>
+                {loggedIn &&
+                  <NavItem eventKey="Recipes/Create">
+                  <NavIcon><CgFileAdd   style={{fontSize: "1.5rem"}} /></NavIcon>
+                  <NavText>Create Recipe</NavText>
+              </NavItem>
+}
 
             </SideNav.Nav>
         </SideNav>
