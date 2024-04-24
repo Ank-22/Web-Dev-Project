@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import axios from 'axios';
 import * as client from "../UserServices/client"
+export const BASE_API = process.env.REACT_APP_API_BASE;
 
 interface Member {
     userId: string;
@@ -25,7 +26,7 @@ const GroupsPage = () => {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const { data } = await axios.get('http://localhost:4000/api/groups');
+      const { data } = await axios.get(`${BASE_API}/api/groups`);
       setGroups(data);
     };
     fetchGroups();
@@ -51,7 +52,7 @@ const GroupsPage = () => {
       // Assume 'currentUser' is available via context or has been fetched
       const userId = profile._id; // This should be fetched from user context or similar
       console.log(userId);
-      const response = await axios.post(`http://localhost:4000/api/join/${groupId}`, { userId: userId });
+      const response = await axios.post(`${BASE_API}/api/join/${groupId}`, { userId: userId });
       console.log('User added to group:', response.data);
       navigate(`/groups/${groupId}`)
       // Optional: Fetch groups again or update local state to reflect the new member count

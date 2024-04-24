@@ -10,6 +10,9 @@ import {
   Grid
 } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
+import { BASE_API } from '../../Recipe';
+
+
 
 const Trending = () => {
   const [mostLikedRecipe, setMostLikedRecipe] = useState({});
@@ -20,7 +23,7 @@ const Trending = () => {
     const fetchRecipes = async () => {
       try {
         // Fetch all recipes
-        const response = await axios.get('http://localhost:4000/api/recipes');
+        const response = await axios.get(`${BASE_API}/api/recipes`);
         const recipes = response.data;
 
         // Find the most liked recipe
@@ -39,7 +42,7 @@ const Trending = () => {
   }, []);
 
   const handleUser = async () => {
-    await axios.get('http://localhost:4000/api/users');
+    await axios.get(`${BASE_API}/api/users`);
   };
 
   return (

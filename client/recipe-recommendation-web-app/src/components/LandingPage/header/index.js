@@ -7,30 +7,27 @@ import * as client from "../../UserServices/client"
 
 
 const LandingPage = () => {
-    const [profile, setProfile] = useState({ _id: "", username: "", password: "",
-    first_name: "", last_name: "", email: "", country: "", age: ""});
+//     const [profile, setProfile] = useState({ _id: "", username: "", password: "",
+//     first_name: "", last_name: "", email: "", country: "", age: ""});
    
-   const fetchProfile = async () => {
+//    const fetchProfile = async () => {
    
-           const account = await client.profile();
-           if (account) {
-               setProfile(account);
-           }
+//            const account = await client.profile();
+//            if (account) {
+//                setProfile(account);
+//            }
    
-     };
-     useEffect(() => {
-       fetchProfile();
-     }, []); 
+//      };
+//      useEffect(() => {
+//        fetchProfile();
+//      }, []); 
      
 
     return(
         <Parallax className="image" bgImage={RecipeBook} strength={425}>
             <div className="content">
-                 {profile.username === "" && 
-                 <div className="img-text animate__animated animate__rotateIn">
-                      <div>Welcome to</div>
-                      <div>Recipe and Recommendations</div>
-                </div>
+                 {/* {profile.username === "" && 
+                 
 
                  }
                    {!profile.username === "" && 
@@ -39,7 +36,11 @@ const LandingPage = () => {
                       <div>{profile.username}</div>
                 </div>
 
-                 }
+                 } */}
+                 <div className="img-text animate__animated animate__rotateIn">
+                      <div>Welcome to</div>
+                      <div>Recipe and Recommendations</div>
+                </div>
             </div>
         </Parallax>
     );
