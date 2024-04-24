@@ -74,7 +74,7 @@ const GroupsPage = () => {
                 <Typography variant="body2">Members: {group.memberCount}</Typography>
                
               </CardContent>
-              <Button variant="contained" color="primary" style={{ marginTop: '10px' }} onClick={() => joinGroup(group._id)}>
+              <Button variant="contained" style={{ marginTop: '10px', background:"#862b0d" }} onClick={() => joinGroup(group._id)}>
                   Join Group
                 </Button>
             </Card>
