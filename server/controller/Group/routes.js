@@ -32,6 +32,21 @@ export default function GroupRoutes(app) {
     }
   };
 
+  app.post('/api/join/:groupId', async (req, res) => {
+    console.log(req.body)
+    console.log(req.params)
+    const { userId } = req.body;
+    const { groupId } = req.params;
+    console.log(userId)
+    try {
+      const updatedGroup = await dao.addMember(groupId, { userId, role: 'member' });
+      res.status(200).json(updatedGroup);
+      
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add user to group", error: error.message });
+    }
+  });
+
   app.post("/api/groups", createGroup);
   app.delete("/api/groups/:groupId", deleteGroup);
   app.put("/api/groups/:groupId", updateGroup);

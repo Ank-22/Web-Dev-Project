@@ -4,9 +4,8 @@ dotenv.config();
 import axios from 'axios';
 import { MongoClient } from 'mongodb';
 
-
 // MongoDB URI and database name
-const uri = "mongodb://localhost:27017/";
+const uri = process.env.DB_CONNECTION_STRING || "mongodb://localhost:27017/";
 const dbName = "recipe";
 const client = new MongoClient(uri);
 
@@ -14,7 +13,7 @@ const client = new MongoClient(uri);
 const baseUrl = "https://api.edamam.com/api/recipes/v2";
 const appId = process.env.APP_ID; // Ensure these are set in your .env file
 const appKey = process.env.APP_KEY;
-const query = "egg"; // Example query
+const query = "indian"; // Example query
 
 // Function to search for recipes
 async function searchRecipes(query) {
@@ -37,10 +36,10 @@ async function storeData(data) {
 
     // Check if the collection already has documents
     const existingCount = await collection.countDocuments();
-    // if (existingCount > 0) {
-    //   console.log("Collection already contains data. Skipping data storage.");
-    //   return;
-    // }
+    if (existingCount > 0) {
+      console.log("Collection already contains data. Skipping data storage.");
+      return;
+    }
 
     // Transform and store each recipe
     for (const hit of data.hits) {

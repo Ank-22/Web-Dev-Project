@@ -212,7 +212,8 @@ const handleCreatePost = async () => {
              Posts
 </div>
 </Typography>
-{group.posts.length !== 0 &&
+<div className='container-fluid'>
+{group.posts &&
   <Grid container spacing={2}>
              {group.posts?.map((post, index) => (
 <Card  style={{width: "100%"}} key={index} sx={{ mb: 2 }}>
@@ -242,6 +243,7 @@ const handleCreatePost = async () => {
              ))}
 </Grid>
 }
+</div>
 </>
        ) : (
 <Box display="flex" justifyContent="center">

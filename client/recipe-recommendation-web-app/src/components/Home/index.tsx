@@ -6,7 +6,7 @@ import AboutUs from "../LandingPage/AboutUs";
 function Home () {
     return (
     <div>
-        <LandingPage/>
+        <LandingPage />
         <AboutUs/>
         <div className="flex-fill">
             <h4>Scroll Down to Learn More</h4>

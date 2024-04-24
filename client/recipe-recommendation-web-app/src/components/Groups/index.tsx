@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
 import axios from 'axios';
-
+import * as client from "../UserServices/client"
 
 interface Member {
     userId: string;
     role: string;
 }
 
-// Define the structure of a single group object
 interface Group {
     _id: string;
     name: string;
     description: string;
     members: Member[];
-    memberCount: number;
+    memberCount: number;
 }
 
 const GroupsPage = () => {
+  const [profile, setProfile] = useState({ _id: "", username: "", password: "",
+ first_name: "", last_name: "", email: "", country: "", age: ""});
   const [groups, setGroups] = useState<Group[]>([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -29,6 +30,35 @@ const GroupsPage = () => {
     };
     fetchGroups();
   }, []);
+  const fetchProfile = async () => {
+    try {
+        const account = await client.profile();
+        if (account) {
+            setProfile(account);
+        }
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        navigate("/Home");
+    }
+  };
+  useEffect(() => {
+    fetchProfile();
+  }, []); 
+  
+
+  const joinGroup = async (groupId: string) => {
+    try {
+      // Assume 'currentUser' is available via context or has been fetched
+      const userId = profile._id; // This should be fetched from user context or similar
+      console.log(userId);
+      const response = await axios.post(`http://localhost:4000/api/join/${groupId}`, { userId: userId });
+      console.log('User added to group:', response.data);
+      navigate(`/groups/${groupId}`)
+      // Optional: Fetch groups again or update local state to reflect the new member count
+    } catch (error) {
+      console.error('Failed to join group:', error);
+    }
+  };
 
   return (
     <Container maxWidth="lg">
@@ -36,15 +66,16 @@ const GroupsPage = () => {
       <Grid container spacing={2}>
         {groups.map((group) => (
           <Grid item key={group._id} xs={12} md={6} lg={4}>
-            <Card sx={{ maxWidth: 345, cursor: 'pointer' }} onClick={() => navigate(`/groups/${group._id}`)}>
-              <CardContent>
+            <Card sx={{ maxWidth: 345, cursor: 'pointer' }} >
+              <CardContent onClick={() => navigate(`/groups/${group._id}`)}>
                 <Typography variant="h5">{group.name}</Typography>
                 <Typography variant="body2">{group.description}</Typography>
                 <Typography variant="body2">Members: {group.memberCount}</Typography>
-                <Button variant="contained" color="primary" style={{ marginTop: '10px' }}>
+               
+              </CardContent>
+              <Button variant="contained" color="primary" style={{ marginTop: '10px' }} onClick={() => joinGroup(group._id)}>
                   Join Group
                 </Button>
-              </CardContent>
             </Card>
           </Grid>
         ))}
