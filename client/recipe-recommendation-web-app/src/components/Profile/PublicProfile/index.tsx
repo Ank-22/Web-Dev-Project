@@ -132,7 +132,7 @@ function Profile() {
                     >
                       Member Count: {group.memberCount}
                     </Typography>
-                    <Typography
+                    {/* <Typography
                       variant="body2"
                       gutterBottom
                       sx={{ color: "white" }}
@@ -141,7 +141,7 @@ function Profile() {
                       {group.members.find(
                         (member: any) => member.userId === profile._id
                       ).role}
-                    </Typography>
+                    </Typography> */}
                   </CardContent>
                 </Card>
               </Grid>

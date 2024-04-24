@@ -198,18 +198,22 @@ const handleCreatePost = async () => {
 </Collapse>
 <Typography variant="h5" sx={{ mt: 4 }} gutterBottom>
 <div style={{margin:"10px", padding:'10px'}}>
-<Button
+{membersDetails.some(member => member.username == profile.username) &&
+  <Button
                variant="contained"
                startIcon={<AddCircleIcon />}
                onClick={handleClickOpen}
-               style={{ marginBottom: '10px' }}
+               style={{ marginBottom: '10px', float:'right', background:'#862B0D'}}
 >
                Add Post
 </Button>
+
+}
              Posts
 </div>
 </Typography>
-<Grid container spacing={2}>
+{group.posts.length !== 0 &&
+  <Grid container spacing={2}>
              {group.posts?.map((post, index) => (
 <Card  style={{width: "100%"}} key={index} sx={{ mb: 2 }}>
                    {post.imageUrl && (
@@ -237,6 +241,7 @@ const handleCreatePost = async () => {
 </Card>
              ))}
 </Grid>
+}
 </>
        ) : (
 <Box display="flex" justifyContent="center">
