@@ -109,7 +109,6 @@ function Profile() {
           }}
         >
           <Grid container spacing={2} sx={{ display: "flex" }}>
-            {JSON.stringify(groups)}
             {groups.map((group: any, index) => (
               <Grid item xs={12} key={index}>
                 <Card sx={{ backgroundColor: "#862B0D" }} onClick={() => navigate(`/groups/${group._id}`)}>
