@@ -22,7 +22,7 @@ function App() {
     const [role, setRole] = useState("");
 
     return (
-    <div className="App color-sand container-fluid px-0">
+    <div className="App container-fluid px-0" >
         <HashRouter>
         <HorizontalSideNav loggedIn={loggedIn} role={role}/>
         <div className="right-shift">
