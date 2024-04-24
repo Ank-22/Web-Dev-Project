@@ -1,4 +1,5 @@
-import * as dao from './dao.js'
+import * as dao from './dao.js';
+import User from '../Users/model.js';
 let currentUser = null;
 
 export default function UserRoutes(app) {
@@ -80,15 +81,20 @@ export default function UserRoutes(app) {
 
   const signUp = async (req, res) => {
     try {
+      console.log("1")
       const existingUser = await User.findOne({ username: req.body.username });
+      console.log("2")
       if (existingUser) {
+        console.log("3")
         res.status(400).json({ message: "Username already taken" });
       } else {
+        console.log("4")
         const newUser = await dao.signUp(req.body);
         currentUser = newUser;
         res.status(200).json(newUser);
       }
     } catch (error) {
+      console.log("5")
       res.status(500).json({ error: error.message });
     }
   };
