@@ -37,12 +37,12 @@ function App() {
                 <Route path="/Home"   element={<Home/>}/>
                 <Route path="/Search" element={<RecipeSearch/>}/>
                 <Route path="/Recipes/Create" element={<RecipeForm/>}/>
-                <Route path='/Recipes/:recipeId/*' element={<RecipeDetail/>}/>
+                <Route path='/Recipes/:recipeId/*' element={<RecipeDetail loggedIn ={loggedIn} />}/>
                 <Route path="/Groups" element={<GroupsPage/>}/>
                 <Route path='/Groups/Create' element={<CreateGroupPage/>}/>
                 <Route path='/Groups/:groupId/*' element={<GroupScreen/>}/>
                 <Route path="/Profile" element={<Profile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
-                <Route path="/PublicProfile/:username" element={<PublicProfile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
+                <Route path="/PublicProfile/:username" element={<PublicProfile />}/>
                 <Route path="/ManageUsers"   element={<ManageUsers/>}/>
                 <Route path="/ManageGroups"   element={<ManageGroups/>}/>
             </Routes>

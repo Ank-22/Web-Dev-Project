@@ -64,7 +64,7 @@ function HorizontalSideNav ({loggedIn, role}) {
                             <NavIcon><CgFileAdd   style={{fontSize: "1.5rem"}} /></NavIcon>
                             <NavText>Create Recipe</NavText>
                         </NavItem>
-                        {role === "admin" &&
+                        {role === "admin" || "chef" &&
                            <NavItem eventKey="groups/Create">
                            <NavIcon><MdOutlineGroupAdd    style={{fontSize: "1.5rem"}} /></NavIcon>
                            <NavText>Create Groups</NavText>

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Button, Card, CardContent, CardMedia, Typography, TextField, IconButton } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/Comment';
+import * as client from "../UserServices/client"
+
 export const BASE_API = process.env.REACT_APP_API_BASE;
 
 interface Comment {
@@ -27,12 +29,16 @@ interface Recipe {
   owner: string;
   imageUrl: string;
 }
+interface RecipeDetailProps {
+  loggedIn: boolean; // Assuming loggedIn is a boolean value
+}
 
 interface User {
+  _id: string;
   username: string;
 }
 
-const RecipeDetail: React.FC = () => {
+const RecipeDetail: React.FC<RecipeDetailProps> = ({loggedIn}) => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,6 +46,7 @@ const RecipeDetail: React.FC = () => {
   const [liked, setLiked] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRecipe();
@@ -59,8 +66,8 @@ const RecipeDetail: React.FC = () => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get<User>(`${BASE_API}/api/users`);
-      setUser(response.data);
+      const response = await client.profile();
+        setUser(response);
     } catch (err) {
       console.error('Failed to fetch user data');
     }
@@ -69,11 +76,12 @@ const RecipeDetail: React.FC = () => {
   const toggleLike = async () => {
     try {
       const newLikes = liked ? recipe!.Likes - 1 : recipe!.Likes + 1;
-      await axios.put(`${BASE_API}/api/recipes/like/${recipeId}`, { Likes: newLikes });
+      await axios.put(`${BASE_API}/api/recipes/like/${recipeId}`, { Likes: newLikes, userId: user?._id });
       setRecipe({ ...recipe!, Likes: newLikes });
       setLiked(!liked);
     } catch (err) {
-      setError('Failed to update likes');
+      //setError('Failed to update likes');
+      navigate(`/Recipes/${recipeId}`, { replace: true })
     }
   };
 
@@ -100,7 +108,7 @@ const RecipeDetail: React.FC = () => {
         <CardMedia
           component="img"
           height="300"
-          image={'/images/default.jpg' || recipe.imageUrl}
+          image={recipe.imageUrl || '/images/default.jpg' }
           alt={recipe.name}
         />
         <CardContent>
@@ -120,9 +128,12 @@ const RecipeDetail: React.FC = () => {
                 <li key={index}>{step}</li>
               ))}
             </ul>
+           {loggedIn &&
             <IconButton onClick={toggleLike} color={liked ? 'primary' : 'default'}>
-              <FavoriteIcon /> {recipe.Likes}
-            </IconButton>
+            <FavoriteIcon /> {recipe.Likes}
+          </IconButton>
+
+           }
           </Typography>
           <Typography sx={{ mt: 2 }}>
             <strong>Comments:</strong>
@@ -132,14 +143,17 @@ const RecipeDetail: React.FC = () => {
               </Typography>
             ))}
             <Box component="form" sx={{ mt: 2 }} onSubmit={(e) => { e.preventDefault(); addComment(); }}>
+              {loggedIn &&
               <TextField
-                fullWidth
-                variant="outlined"
-                label="Add a comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
-              <Button type="submit" variant="contained" sx={{ mt: 1 }}>Submit</Button>
+              fullWidth
+              variant="outlined"
+              label="Add a comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />}
+            {loggedIn &&
+            <Button type="submit" variant="contained" sx={{ mt: 1 }}>Submit</Button>}
+              
             </Box>
           </Typography>
         </CardContent>

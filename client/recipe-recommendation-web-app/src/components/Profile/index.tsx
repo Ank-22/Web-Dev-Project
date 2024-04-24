@@ -1,3 +1,4 @@
+import "./index.css"
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as client from "../UserServices/client";
@@ -34,7 +35,7 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
-      enqueueSnackbar('Please log in to continue.', { variant: 'error' });
+      alert("Please Log in");
       navigate("/Home", { replace: true });
     }
   };
@@ -56,90 +57,51 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
 
   return (
     <div>
-      <h1>Profile</h1>
-      <div className="form">
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          value={profile.username}
-          InputProps={{
-            readOnly: true,
-          }}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Password"
-          variant="outlined"
-          fullWidth
-          type="password"
-          value={profile.password}
-          onChange={(e) => setProfile({ ...profile, password: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="First Name"
-          variant="outlined"
-          fullWidth
-          value={profile.first_name}
-          onChange={(e) => setProfile({ ...profile, first_name: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Last Name"
-          variant="outlined"
-          fullWidth
-          value={profile.last_name}
-          onChange={(e) => setProfile({ ...profile, last_name: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Age"
-          variant="outlined"
-          fullWidth
-          type="number"
-          value={profile.age}
-          onChange={(e) => setProfile({ ...profile, age: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Country"
-          variant="outlined"
-          fullWidth
-          value={profile.country}
-          onChange={(e) => setProfile({ ...profile, country: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Email"
-          variant="outlined"
-          fullWidth
-          value={profile.email}
-          onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="User Role"
-          variant="outlined"
-          fullWidth
-          value={profile.role}
-          InputProps={{
-            readOnly: true,
-          }}
-          sx={{ mb: 2 }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={save}
-          sx={{ mb: 2 }}
-        >
+      
+         <div className="form ">
+         <div style={{float:"right"}}>
+        <button className="btn btn-primary form-control" style={{background:"#862B0D", margin:"5px", padding:"5px"}} onClick={() => navigate(`/Publicprofile/${profile.username}`)}>
+          View Public Profile
+        </button>
+      </div>
+      <br></br>
+                <label className="float-start" htmlFor="user">Username: </label>
+                <input id="user" className="form-control" readOnly={true} value={profile.username} onChange={(e) =>
+                    setProfile({ ...profile, username: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="pw">Password: </label>
+                <input id="pw" className="form-control" value={profile.password} onChange={(e) =>
+                    setProfile({ ...profile, password: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="fname">First Name: </label>
+                <input id="fname" className="form-control" value={profile.first_name} onChange={(e) =>
+                    setProfile({ ...profile, first_name: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="lname">Last Name: </label>
+                <input id="lname" className="form-control" value={profile.last_name} onChange={(e) =>
+                    setProfile({ ...profile, last_name: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="age">Age: </label>
+                <input id="age" className="form-control" value={profile.age} onChange={(e) =>
+                    setProfile({ ...profile, age: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="country">Country: </label>
+                <input id="country" className="form-control" value={profile.country} onChange={(e) =>
+                    setProfile({ ...profile, country: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="email">Email: </label>
+                <input id="email" className="form-control" value={profile.email} onChange={(e) =>
+                    setProfile({ ...profile, email: e.target.value })}/>
+                <br/>
+                <label className="float-start" htmlFor="role">User Role: </label> {" "}
+                <input id="role" className="form-control" value={profile.role} readOnly={true}/>
+                <br/><br/>
+                <button className="btn btn-primary form-control" onClick={save}>
           Save
-        </Button>
+        </button>
         <Button
           variant="contained"
-          color="secondary"
+          style={{background:"#862B0D"}}
           fullWidth
           onClick={signout}
         >

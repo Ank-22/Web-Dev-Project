@@ -19,7 +19,7 @@ interface ProfileProps {
   setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
+function Profile() {
   const { username } = useParams<{ username: string }>(); // Asserting that username is always a string
   const [profile, setProfile] = useState({
     _id: "",
@@ -39,9 +39,10 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
         // Ensure username is not undefined
         const account = await client.findUsersByUsername(username);
         if (account) {
-          setRole(account.role);
+         
           setProfile(account);
           const userGroups = (await axios.get(`${BASE_API}/api/groups`)).data;
+          console.log(userGroups)
           setGroups(
             userGroups.filter((group: any) =>
               group.members.find(
@@ -61,12 +62,6 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
       console.error("Error fetching profile:", error);
       navigate("/Home");
     }
-  };
-
-  const signout = async () => {
-    await client.signout();
-    setLoggedIn(false);
-    navigate("/Home");
   };
 
   useEffect(() => {
@@ -114,9 +109,10 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
           }}
         >
           <Grid container spacing={2} sx={{ display: "flex" }}>
+            {JSON.stringify(groups)}
             {groups.map((group: any, index) => (
               <Grid item xs={12} key={index}>
-                <Card sx={{ backgroundColor: "#862B0D" }}>
+                <Card sx={{ backgroundColor: "#862B0D" }} onClick={() => navigate(`/groups/${group._id}`)}>
                   <CardHeader
                     title={group.name}
                     sx={{ color: "white", borderBottom: "1px solid #fff" }}

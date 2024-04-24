@@ -14,7 +14,7 @@ const client = new MongoClient(uri);
 const baseUrl = "https://api.edamam.com/api/recipes/v2";
 const appId = process.env.APP_ID; // Ensure these are set in your .env file
 const appKey = process.env.APP_KEY;
-const query = "chicken"; // Example query
+const query = "egg"; // Example query
 
 // Function to search for recipes
 async function searchRecipes(query) {
@@ -37,10 +37,10 @@ async function storeData(data) {
 
     // Check if the collection already has documents
     const existingCount = await collection.countDocuments();
-    if (existingCount > 0) {
-      console.log("Collection already contains data. Skipping data storage.");
-      return;
-    }
+    // if (existingCount > 0) {
+    //   console.log("Collection already contains data. Skipping data storage.");
+    //   return;
+    // }
 
     // Transform and store each recipe
     for (const hit of data.hits) {
@@ -53,7 +53,8 @@ async function storeData(data) {
         steps: recipe.ingredientLines,
         cuisines: recipe.cuisineType,
         author: "Edamam API",
-        Likes: 0 // Storing the API's 'source' as the 'author'
+        Likes: 0, // Storing the API's 'source' as the 'author'
+        likeByUsers: [],
         // ... add any other fields you need to map
       };
 

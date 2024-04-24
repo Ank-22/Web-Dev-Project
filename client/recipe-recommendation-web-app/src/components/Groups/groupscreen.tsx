@@ -133,8 +133,12 @@ const handleCreatePost = async () => {
    type: 'post'
  };
  try {
+  console.log(newPost)
    const response = await axios.post(`${BASE_API}/api/group-items`, newPost);
+   console.log(response.data)
    const updatedGroup = { ...group! };
+   console.log("UpdatedGroups")
+   console.log(updatedGroup)
    updatedGroup.posts.push(response.data);
    setGroup(updatedGroup);
    setOpen(false);
@@ -207,7 +211,7 @@ const handleCreatePost = async () => {
 </Typography>
 <Grid container spacing={2}>
              {group.posts?.map((post, index) => (
-<Card  style={{width: "100%"}} sx={{ mb: 2 }}>
+<Card  style={{width: "100%"}} key={index} sx={{ mb: 2 }}>
                    {post.imageUrl && (
 <CardMedia
                        component="img"
