@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import * as client from "../../UserServices/client";
-import { Card, CardContent, Container, Button, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Container,
+  Typography,
+  Grid,
+  Box,
+  CardHeader,
+} from "@mui/material";
+import axios from "axios";
+export const BASE_API = process.env.REACT_APP_API_BASE;
 
 interface ProfileProps {
   role: string;
@@ -12,6 +22,7 @@ interface ProfileProps {
 function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
   const { username } = useParams<{ username: string }>(); // Asserting that username is always a string
   const [profile, setProfile] = useState({
+    _id: "",
     username: "",
     first_name: "",
     last_name: "",
@@ -19,15 +30,25 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
     country: "",
     age: "",
   });
+  const [groups, setGroups] = useState<any[]>([]);
 
   const navigate = useNavigate();
   const fetchProfile = async () => {
     try {
-      if (username) { // Ensure username is not undefined
+      if (username) {
+        // Ensure username is not undefined
         const account = await client.findUsersByUsername(username);
         if (account) {
           setRole(account.role);
           setProfile(account);
+          const userGroups = (await axios.get(`${BASE_API}/api/groups`)).data;
+          setGroups(
+            userGroups.filter((group: any) =>
+              group.members.find(
+                (member: any) => member.userId === account._id
+              )
+            )
+          );
         } else {
           console.error("No user found");
           navigate("/Home");
@@ -80,6 +101,58 @@ function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
           </Typography>
         </CardContent>
       </Card>
+
+      <Box mt={4}>
+        <Typography variant="h5" gutterBottom>
+          Groups Affiliated
+        </Typography>
+        <Box
+          sx={{
+            overflowX: "auto",
+            scrollbarWidth: "none",
+            marginBottom: "20px",
+          }}
+        >
+          <Grid container spacing={2} sx={{ display: "flex" }}>
+            {groups.map((group: any, index) => (
+              <Grid item xs={12} key={index}>
+                <Card sx={{ backgroundColor: "#862B0D" }}>
+                  <CardHeader
+                    title={group.name}
+                    sx={{ color: "white", borderBottom: "1px solid #fff" }}
+                  />
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ color: "white" }}
+                    >
+                      Description: {group.description}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ color: "white" }}
+                    >
+                      Member Count: {group.memberCount}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      sx={{ color: "white" }}
+                    >
+                      Group Role:{" "}
+                      {group.members.find(
+                        (member: any) => member.userId === profile._id
+                      ).role}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
     </Container>
   );
 }

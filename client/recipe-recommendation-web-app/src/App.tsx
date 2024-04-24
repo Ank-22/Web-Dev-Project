@@ -13,6 +13,7 @@ import ManageUsers from "./components/ManageUsers";
 import GroupScreen from './components/Groups/groupscreen';
 import CreateGroupPage from './components/Groups/createGroup';
 import PublicProfile from './components/Profile/PublicProfile';
+import ManageGroups from './components/ManageGroups';
 
 
 
@@ -43,6 +44,7 @@ function App() {
                 <Route path="/Profile" element={<Profile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
                 <Route path="/PublicProfile/:username" element={<PublicProfile role={role} setRole={setRole} setLoggedIn={setLoggedIn}/>}/>
                 <Route path="/ManageUsers"   element={<ManageUsers/>}/>
+                <Route path="/ManageGroups"   element={<ManageGroups/>}/>
             </Routes>
 
         </div>
