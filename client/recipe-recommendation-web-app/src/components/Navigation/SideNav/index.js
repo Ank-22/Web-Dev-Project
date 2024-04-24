@@ -9,7 +9,7 @@ import { FaSearch } from "react-icons/fa";
 import {useEffect, useState} from "react";
 import { CgFileAdd } from "react-icons/cg";
 import { MdOutlineAddCircleOutline, MdOutlineGroupAdd, MdOutlineGroups  } from "react-icons/md";
-
+import { GrUserSettings } from "react-icons/gr";
 
 function HorizontalSideNav ({loggedIn, role}) {
     const navigate = useNavigate();
@@ -64,7 +64,7 @@ function HorizontalSideNav ({loggedIn, role}) {
                             <NavIcon><CgFileAdd   style={{fontSize: "1.5rem"}} /></NavIcon>
                             <NavText>Create Recipe</NavText>
                         </NavItem>
-                        {role === "admin" &&
+                        { (role === "admin" || role === "chef")&&
                            <NavItem eventKey="groups/Create">
                            <NavIcon><MdOutlineGroupAdd    style={{fontSize: "1.5rem"}} /></NavIcon>
                            <NavText>Create Groups</NavText>
@@ -79,6 +79,12 @@ function HorizontalSideNav ({loggedIn, role}) {
                      <NavText>Groups</NavText>
                  </NavItem>
                 }
+                { (role === "admin")&&
+                           <NavItem eventKey="Managegroups">
+                           <NavIcon><GrUserSettings    style={{fontSize: "1.5rem"}} /></NavIcon>
+                           <NavText>Manage Groups</NavText>
+                       </NavItem>
+                        }
             </SideNav.Nav>
         </SideNav>
     )

@@ -1,55 +1,70 @@
 import "./index.css"
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import * as client from "../UserServices/client"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import * as client from "../UserServices/client";
+import { Snackbar, Button, TextField } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 interface ProfileProps {
-    role: string;
-    setRole: React.Dispatch<React.SetStateAction<string>>;
-    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  role: string;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
+  setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+function Profile({ role, setRole, setLoggedIn }: ProfileProps) {
+  const [profile, setProfile] = useState({
+    username: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    role: role,
+    country: "",
+    age: "",
+  });
 
-function Profile ({role, setRole, setLoggedIn}: ProfileProps) {
-    const [profile, setProfile] = useState({ username: "", password: "",
-        first_name: "", last_name: "", email: "", role: role, country: "", age: ""});
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar(); // Correctly placed useSnackbar hook
 
-    const navigate = useNavigate();
-    const fetchProfile = async () => {
-        try {
-            const account = await client.profile();
-            if (account) {
-                setRole(account.role);
-                setProfile(account);
-            }
-        } catch (error) {
-            console.error("Error fetching profile:", error);
-            navigate("/Home");
-        }
-    };
+  const fetchProfile = async () => {
+    try {
+      const account = await client.profile();
+      if (account) {
+        setRole(account.role);
+        setProfile(account);
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      alert("Please Log in");
+      navigate("/Home", { replace: true });
+    }
+  };
 
+  const save = async () => {
+    await client.updateUser(profile);
+    alert("Update successful!");
+  };
 
-    const save = async () => {
-        await client.updateUser(profile);
-        alert("Update successful!");
-    };
+  const signout = async () => {
+    await client.signout();
+    setLoggedIn(false);
+    navigate("/Home");
+  };
 
-    const signout = async () => {
-        await client.signout();
-        setLoggedIn(false);
-        navigate("/Home");
-    };
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
-
-
-    useEffect(() => {
-        fetchProfile();
-    }, []);
-    return (
-        <div>
-            <h1>Profile</h1>
-
-            <div className="form ">
+  return (
+    <div>
+      
+         <div className="form ">
+         <div style={{float:"right"}}>
+        <button className="btn btn-primary form-control" style={{background:"#862B0D", margin:"5px", padding:"5px"}} onClick={() => navigate(`/Publicprofile/${profile.username}`)}>
+          View Public Profile
+        </button>
+      </div>
+      <br></br>
                 <label className="float-start" htmlFor="user">Username: </label>
                 <input id="user" className="form-control" readOnly={true} value={profile.username} onChange={(e) =>
                     setProfile({ ...profile, username: e.target.value })}/>
@@ -82,16 +97,19 @@ function Profile ({role, setRole, setLoggedIn}: ProfileProps) {
                 <input id="role" className="form-control" value={profile.role} readOnly={true}/>
                 <br/><br/>
                 <button className="btn btn-primary form-control" onClick={save}>
-                    Save
-                </button>
-                <br/><br/>
-                <button className="btn btn-danger form-control" onClick={signout}>
-                    Sign Out
-                </button>
-            </div>
-
-        </div>
-    );
+          Save
+        </button>
+        <Button
+          variant="contained"
+          style={{background:"#862B0D"}}
+          fullWidth
+          onClick={signout}
+        >
+          Sign Out
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export default Profile;

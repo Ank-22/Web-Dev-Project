@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 // Define the schema for members of the group
 const memberSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  role: { type: String, enum: ['admin', 'member'], default: 'admin' } // default role as admin for initial member
+  role: { type: String, enum: ['admin', 'member'], default: 'member' } // default role as admin for initial member
 }, { _id: false }); // This prevents Mongoose from automatically creating an _id for each member
 
 

@@ -8,13 +8,12 @@ const commentSchema = new mongoose.Schema({
 
 // Recipe Schema
 const recipeSchema = new mongoose.Schema({
-  id: { type: String },
   name: { type: String, required: true },
   author: { type: String, required: true },
-  cuisines: { type: String, required: true },
-  ingredients: [{ type: String, required: true }],
-  cooking_time: { type: String, required: true },
-  type: { type: String, required: true },
+  cuisines: { type: String,  },
+  ingredients: [{ type: String, }],
+  cooking_time: { type: String,  },
+  type: { type: String,  },
   meat_type: { type: String, default: "NA" },
   steps: [{ type: String, required: true }],
   GroupID: { type: String, default: "NA" },

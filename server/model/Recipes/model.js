@@ -1,4 +1,4 @@
 import mongoose from "mongoose";
 import schema from "./schema.js";
-const model = mongoose.model("RecipeModel", schema);
+const model = mongoose.model("recipemodels", schema);
 export default model;

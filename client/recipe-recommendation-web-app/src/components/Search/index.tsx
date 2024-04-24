@@ -1,53 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, TextField, Button, Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
-export const BASE_API = process.env.REACT_APP_API_BASE;
+
+const BASE_API = process.env.REACT_APP_API_BASE;
 
 interface Recipe {
+
   _id: string;
+
   name: string;
+
   imageUrl: string;
+
   Likes: number;
+
   keyword: string;
+
 }
 
-const request = axios.create({
-  withCredentials: true,
-});
 
-const RecipeSearch: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [error, setError] = useState<string>('');
+
+const request = axios.create({
+
+  withCredentials: true,
+
+});
+// Helper function to parse query parameters
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
+const RecipeSearch = () => {
+  const [recipes, setRecipes] =  useState<Recipe[]>([]);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const query = useQuery();
+  const searchTerm = query.get('query') || '';
 
   useEffect(() => {
-    // Fetch filters or initialize other data on mount
-    fetchRecipes();
-  }, []);
+    if (searchTerm) {
+      handleSearch(searchTerm);
+    } else {
+      fetchRecipes();
+    }
+  }, [searchTerm]);
 
   const fetchRecipes = async () => {
     try {
-      const response = await request.get(`${BASE_API}/api/recipes`);
-      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes));
-    } catch (error: any) {
+      const response = await axios.get(`${BASE_API}/api/recipes`);
+      setRecipes(response.data.sort((a:any, b:any) => b.Likes - a.Likes));
+    } catch (error) {
       setError('Failed to fetch recipes');
     }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (term:any) => {
     try {
-      console.log(searchTerm)
-      const response = await axios.get(`${BASE_API}/api/recipes/search?keyword=${searchTerm}`);
-      setRecipes(response.data.sort((a: Recipe, b: Recipe) => b.Likes - a.Likes))
-      console.log("After API")
-      return response.data;
+      const response = await axios.get(`${BASE_API}/api/recipes/search?keyword=${term}`);
+      setRecipes(response.data.sort((a:any, b:any) => b.Likes - a.Likes));
     } catch (error) {
-      console.error('Error searching recipes:', error);
-      return []; // Return an empty array on error
-    }
+      setError('Error searching recipes');
+    }
   };
+
   return (
     <Box sx={{ flexGrow: 1, m: 2 }}>
       <Typography variant="h4" gutterBottom component="div">
@@ -57,11 +73,11 @@ const RecipeSearch: React.FC = () => {
         fullWidth
         label="Search for recipes..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => navigate(`/search?query=${e.target.value}`)}
         variant="outlined"
         sx={{ mb: 2 }}
       />
-      <Button variant="contained" onClick={handleSearch}>Search</Button>
+      <Button variant="contained" onClick={() => handleSearch(searchTerm)}>Search</Button>
       {error && <Typography color="error">{error}</Typography>}
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {recipes.map((recipe) => (
@@ -70,7 +86,7 @@ const RecipeSearch: React.FC = () => {
               <CardMedia
                 component="img"
                 height="140"
-                image={'/images/deafult.jpg' || recipe.imageUrl }
+                image={recipe.imageUrl || '/images/default.jpg'}
                 alt={recipe.name}
               />
               <CardContent>

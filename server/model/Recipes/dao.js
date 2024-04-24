@@ -8,7 +8,7 @@ export const deleteRecipe = (recipeId) => model.deleteOne({ _id: recipeId });
 
 export const modifyLikes = async (recipeId, userId) => {
   const recipe = await model.findById(recipeId);
-  const index = recipe.likeByUsers.indexOf(userId);
+  const index =[ recipe.likeByUsers.indexOf(userId)];
   if (index > -1) {
     recipe.likeByUsers.splice(index, 1);
     recipe.Likes -= 1;
@@ -16,6 +16,7 @@ export const modifyLikes = async (recipeId, userId) => {
     recipe.likeByUsers.push(userId);
     recipe.Likes += 1;
   }
+  console.log(recipe.save())
   return recipe.save();
 };
 
