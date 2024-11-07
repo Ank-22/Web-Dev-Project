@@ -57,6 +57,12 @@ const Trending = () => {
           <Grid item xs={6}>
             <Card variant="outlined" style={{ backgroundColor: '#F7F7F7' }} onClick={() => navigate(`/recipes/${mostLikedRecipe._id}`)}>
               <CardContent>
+              <CardMedia
+          component="img"
+          height="300"
+          image={mostLikedRecipe.imageUrl || '/images/default.jpg' }
+          alt={mostLikedRecipe.name}
+        />
                 <Typography variant="h6" component="div">Name: {mostLikedRecipe.name}</Typography>
                 <Typography variant="body2">Author: {mostLikedRecipe.author}</Typography>
                 <Typography variant="body2">Likes: {mostLikedRecipe.Likes}</Typography>
@@ -65,6 +71,12 @@ const Trending = () => {
           </Grid>
           <Grid item xs={6}>
             <Card variant="outlined" style={{ backgroundColor: '#F7F7F7' }}onClick={() => navigate(`/recipes/${randomRecipe._id}`)}>
+            <CardMedia
+          component="img"
+          height="300"
+          image={randomRecipe.imageUrl || '/images/default.jpg' }
+          alt={randomRecipe.name}
+        />
               <CardContent>
                 <Typography variant="h6" component="div">Name: {randomRecipe.name}</Typography>
                 <Typography variant="body2">Author: {randomRecipe.author}</Typography>
